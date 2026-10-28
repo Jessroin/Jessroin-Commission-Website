@@ -294,3 +294,11 @@ footer::before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px
   .shot-big{height:200px}
   footer{margin-top:60px}
 }
+
+/* ===== 自訂滑鼠游標(電腦版):圖檔 cursor-32.png / cursor-64.png 要和網頁放在同一層 =====
+   尖端(熱點)在圖片左上角;瀏覽器對游標大小有限制,32px 最穩定,64px 是給高解析螢幕用的。
+   想換成別張圖,只要取代這兩個檔案(同樣檔名)即可 */
+@media(pointer:fine){
+  html,html *{cursor:url(cursor-32.png) 0 0,auto!important;cursor:-webkit-image-set(url(cursor-32.png) 1x,url(cursor-64.png) 2x) 0 0,auto!important;cursor:image-set(url(cursor-32.png) 1x,url(cursor-64.png) 2x) 0 0,auto!important}
+  html input:not([type=checkbox]):not([type=radio]):not([type=button]):not([type=submit]):not([type=range]),html textarea{cursor:text!important}
+}
