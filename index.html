@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script src="loader.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>作品集&委託價目表 | 潔諾Jessroin</title>
+<meta name="description" content="潔諾Jessroin的作品集與委託價目表。承接正比、Q版、貼圖、塗鴉、插圖、VTuber皮。">
+<script type="text/javascript" nonce="0e234c26dc074ce9bdd7a0c1622" src="//local.adguard.org?ts=1793113766065&amp;type=content-script&amp;dmn=chatgpt.com&amp;url=https%3A%2F%2Fchatgpt.com%2Fbackend-api%2Festuary%2Fcontent%3Fid%3Dfile_00000000e8c082098269c6fc14151dbd%26ts%3D498087%26p%3Dfs%26cid%3D1%26sig%3D16d0fe562bade90bc58ce0c2e7b38e48fb7877b922ec8407173a92fae753ca49%26v%3D0&amp;app=msedge.exe&amp;css=2&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1&amp;stealth=1&amp;st-dnt"></script><script type="text/javascript" nonce="0e234c26dc074ce9bdd7a0c1622" src="//local.adguard.org?ts=1793113766065&amp;name=AdGuard%20Extra&amp;name=AdGuard%20Popup%20Blocker&amp;type=user-script"></script><link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <nav aria-label="主選單">
+    <a class="logo" href="index.html">潔諾&nbsp;Jessroin</a>
+    <ul>
+        <li><a href="index.html" aria-current="page">首頁</a></li>
+        <li><a href="notice.html">委託須知</a></li>
+        <li><a href="price.html">委託價目表</a></li>
+        <li><a href="works.html">作品集</a></li>
+        <li><a href="partners.html">合作夥伴</a></li>
+    </ul>
+    <a class="btn sm" href="calc.html">委託試算</a>
+  </nav>
+</header>
+
+<main>
+  <section class="wrap hero2">
+    <!-- 頭像:把你的圖片命名為 avatar.jpg,放在和 index.html 同一個資料夾,就會自動顯示 -->
+    <div class="win avatar-win">
+      <div class="win-bar"><i></i><i></i><i></i></div>
+      <div class="win-pic"><span>🐱</span><img src="avatar.jpg" alt="潔諾的頭像" onerror="this.remove()"></div>
+    </div>
+    <div class="hero-text">
+      <!-- 開放或滿檔時,改下面這個標籤的文字就好 -->
+      <span class="chip dot">委託開放中</span>
+      <h1>哈囉～這裡是<mark>潔諾</mark>！</h1>
+      <p class="lead">目前有8年接案經歷，是一位獨立遊戲創作者！</p>
+      <p class="tags">角色設計 ・ 插畫 ・ Q版人物 ・ VTuber V皮</p>
+      <div class="btns">
+        <a class="btn blue" href="works.html">看作品</a>
+        <a class="btn yellow" href="notice.html">委託須知</a>
+        <a class="btn" href="price.html">委託價目表</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="marquee-sec">
+    <!-- 大圖跑馬燈:自動使用作品集「全部」裡的圖(images/works/illust 和 images/works/qq,插圖和 QQ人 交錯)。
+         要換圖就去換那兩個資料夾裡的圖,這裡不用改。 -->
+    <div class="marquee">
+      <div class="track" id="track"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot">
+    <div class="social">
+      <a href="https://www.facebook.com/profile.php?id=100083111569121" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://www.instagram.com/jessroin_0709/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://x.com/Jessroin" target="_blank" rel="noopener">Twitter</a>
+      <a href="https://www.youtube.com/channel/UCgwQNXVbiRiOYTJgha7Ojbg" target="_blank" rel="noopener">Youtube</a>
+      <a href="https://www.twitch.tv/jessroin" target="_blank" rel="noopener">Twitch</a>
+    </div>
+    <p class="foot-info">回覆時間：平日星期一至五　・　商業合作：<a href="mailto:jessroin0709@gmail.com">jessroin0709@gmail.com</a></p>
+    <p class="copy">© 2026&nbsp;潔諾&nbsp;Jessroin。作品版權所有，請勿未經同意轉載使用。謝謝你來逛逛 ♡</p>
+  </div>
+</footer>
+
+<script src="gallery.js"></script>
+<script>
+(function(){
+  /* 跑馬燈的圖片來源:和作品集「全部」相同的資料夾(插圖、QQ人),輪流交錯 */
+  var FOLDERS=['illust','qq'];
+  var track=document.getElementById('track'),sec=track.closest('.marquee-sec');
+
+  Promise.all(FOLDERS.map(function(f){return JessGallery.findImages('images/works/'+f);})).then(function(lists){
+    var list=[],max=0,k;
+    lists.forEach(function(l){if(l.length>max)max=l.length;});
+    for(k=0;k<max;k++)lists.forEach(function(l){if(k<l.length)list.push(l[k]);});
+    if(!list.length){sec.hidden=true;return;} /* 沒有任何圖就整區隱藏 */
+
+    function shot(item,i,hidden){
+      var d=document.createElement('div');d.className='shot-big';
+      d.style.setProperty('--ar',item.w+'/'+item.h);
+      if(hidden)d.setAttribute('aria-hidden','true');
+      var im=document.createElement('img');im.src=item.src;im.alt=hidden?'':'作品 '+(i+1);
+      im.decoding='async';
+      d.appendChild(im);return d;
+    }
+
+    /* 圖太少時先重複幾輪,讓一組的寬度至少填滿螢幕;再放第二組讓動畫無縫接續 */
+    var h=(window.innerWidth<=600?240:340); /* 和 style.css 裡 .shot-big 的高度一致 */
+    var one=list.reduce(function(w,it){return w+h*it.w/it.h+20+3;},0);
+    var reps=Math.max(1,Math.ceil(window.innerWidth/one));
+    var group=[];for(k=0;k<reps;k++)group=group.concat(list);
+    group.forEach(function(it,i){track.appendChild(shot(it,i,false));});
+    group.forEach(function(it,i){track.appendChild(shot(it,i,true));});
+  });
+})();
+</script>
+
+</body>
+</html>

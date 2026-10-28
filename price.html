@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script src="loader.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>委託價目表 | 潔諾Jessroin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+/* 價目表頁專用:加大整體與頁首留白(只影響本頁) */
+.roomy.price-top{padding-top:76px}
+/* 分類按鈕:電腦版在左側(往下捲動時會跟著停住),手機版改成上方可左右滑的一排 */
+.price-top .price-layout{grid-template-columns:120px minmax(0,1fr);gap:24px;align-items:start}
+@media(min-width:821px){
+  .price-top .price-layout .tabs{padding:8px;gap:6px}
+  .price-top .price-layout .tabs button{padding:8px 6px}
+  .price-top .price-layout .tabs button small{font-size:.75rem}
+}
+.price-top .tabs{flex-direction:column;position:sticky;top:96px}
+.price-top .tabs button{text-align:left}
+@media(max-width:820px){
+  .price-top .price-layout{grid-template-columns:1fr}
+  .price-top .tabs{flex-direction:row;position:static;overflow-x:auto}
+  .price-top .tabs button{flex:0 0 auto;min-width:118px;text-align:center}
+}
+.price-top .panel{display:flex;flex-direction:column}
+.price-top .panel[hidden]{display:none}
+.price-top .panel .card{order:1}
+.price-top .panel .example{order:2;margin:20px 0 0}
+.price-top .tabs{padding:14px;gap:8px;top:96px}
+.price-top .tabs button{padding:9px 16px}
+.price-top .example{padding:12px;margin-bottom:20px}
+.price-top .card{padding:16px 26px;line-height:1.7}
+.price-top .card h3{margin-bottom:4px}
+.price-top .card p{margin-bottom:6px}
+.price-top .card .list li{margin-bottom:6px}
+.price-top .prices li{padding:7px 0}
+.price-top .meta{margin-top:.5rem}
+.price-top .item+.item{margin-top:16px;padding-top:14px}
+.price-top .item-head{margin-bottom:4px}
+.price-top .addons{gap:6px 10px}
+.price-top .addons li{padding:3px 12px}
+.heart-line::before{content:"♥";color:var(--pink-deep);margin-right:6px}
+/* 範例圖有載入時:拿掉後面的白底、框線、陰影與內距,透明背景的圖就會直接透出頁面底色 */
+.price-top .example.has-img{background:none;border:0;box-shadow:none;padding:0}
+.price-top .example.has-img .car-track,.price-top .example.has-img .car-slide img{border-radius:0}
+.roomy{padding-top:96px;padding-bottom:96px}
+.roomy .sec-title{margin-bottom:56px}
+.roomy .sec-title.order-title{margin-bottom:28px}
+.roomy .lic{gap:32px}
+.roomy .lic .card{padding:30px 26px}
+.roomy .btns{gap:20px!important}
+@media(max-width:820px){
+  .roomy.price-top{padding-top:56px}
+  .price-top .price-layout{gap:32px}
+  .roomy{padding-top:68px;padding-bottom:68px}
+}
+@media(max-width:600px){
+  .roomy.price-top{padding-top:40px}
+  .price-top .card{padding:14px 18px}
+  .roomy{padding-top:56px;padding-bottom:56px}
+  .roomy .sec-title{margin-bottom:36px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <nav aria-label="主選單">
+    <a class="logo" href="index.html">潔諾&nbsp;Jessroin</a>
+    <ul>
+        <li><a href="index.html">首頁</a></li>
+        <li><a href="notice.html">委託須知</a></li>
+        <li><a href="price.html" aria-current="page">委託價目表</a></li>
+        <li><a href="works.html">作品集</a></li>
+        <li><a href="partners.html">合作夥伴</a></li>
+    </ul>
+    <a class="btn sm" href="calc.html">委託試算</a>
+  </nav>
+</header>
+
+<main>
+  <section class="wrap section roomy price-top">
+    <div class="price-layout">
+      <div class="tabs" role="tablist"><button type="button" role="tab" data-tab="gummy" aria-selected="false">軟糖<small>NT$ 150 起</small></button><button type="button" role="tab" data-tab="doodle" aria-selected="true">塗鴉<small>NT$ 500 起</small></button><button type="button" role="tab" data-tab="qq" aria-selected="false">QQ人<small>NT$ 350 起</small></button><button type="button" role="tab" data-tab="avatar" aria-selected="false">頭貼<small>NT$ 600 起</small></button><button type="button" role="tab" data-tab="half" aria-selected="false">半身<small>NT$ 800 起</small></button><button type="button" role="tab" data-tab="full" aria-selected="false">全身／立繪<small>NT$ 1,200 起</small></button><button type="button" role="tab" data-tab="illust" aria-selected="false">插圖<small>NT$ 2,500 起</small></button><button type="button" role="tab" data-tab="sticker" aria-selected="false">貼圖<small>NT$ 350／張</small></button><button type="button" role="tab" data-tab="vtuber" aria-selected="false">VTuber皮<small>NT$ 8,000 起</small></button></div>
+      <div class="panels">
+    <!-- 範例圖會自動從資料夾讀取,不用改這個檔案:
+         images/price/gummy/    軟糖
+         images/price/doodle/   塗鴉        images/price/qq/       QQ人
+         images/price/avatar/   頭貼        images/price/half/     半身
+         images/price/full/     全身／立繪   images/price/illust/   插圖
+         images/price/sticker/  貼圖        images/price/vtuber/   VTuber皮
+         每個資料夾裡的圖片命名為 01.jpg、02.jpg、03.jpg…(數字要連續)。
+         資料夾是空的時,會顯示粉色的「範例圖」佔位框。 -->
+    <div class="panel" id="doodle">
+      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="card">
+        <h3>塗鴉（非商業價格）</h3>
+        <ul class="prices">
+          <li><span>塗鴉驚喜包<small>可隨意打賞，內容依打賞價格，可能包含頭貼、半身、全身、QQ人、組合頁</small></span><span class="price">NT$&nbsp;500&nbsp;起</span></li>
+        </ul>
+        <ul class="list">
+          <li>一律為純底色塗鴉，可指定方向，但不可指定內容</li>
+          <li>驚喜包基本為頭貼塗鴉</li>
+          <li>注意！塗鴉會有溢色、雜線！</li>
+        </ul>
+        <p class="meta">工期：一週</p>
+      </div>
+    </div>
+
+    <div class="panel" id="qq" hidden>
+      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="card">
+        <h3>QQ人（非商業價格）</h3>
+        <ul class="prices">
+          <li><span>塗鴉</span><span class="price">NT$ 350</span></li>
+          <li><span>精緻上色</span><span class="price">NT$ 600</span></li>
+        </ul>
+        <p class="meta">工期：兩週</p>
+      </div>
+    </div>
+
+    <div class="panel" id="avatar" hidden>
+      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="card">
+        <h3>頭貼（非商業價格）</h3>
+        <ul class="prices">
+          <li><span>塗鴉</span><span class="price">NT$ 600</span></li>
+          <li><span>精緻上色</span><span class="price">NT$ 1,000</span></li>
+        </ul>
+        <p class="meta">工期：兩週</p>
+      </div>
+    </div>
+
+    <div class="panel" id="half" hidden>
+      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="card">
+        <h3>半身（非商業價格）</h3>
+        <ul class="prices">
+          <li><span>塗鴉</span><span class="price">NT$ 800</span></li>
+          <li><span>精緻上色</span><span class="price">NT$ 1,500</span></li>
+        </ul>
+        <p class="meta">工期：兩週</p>
+      </div>
+    </div>
+
+    <div class="panel" id="full" hidden>
+      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="card">
+        <h3>全身／立繪（非商業價格）</h3>
+        <ul class="prices">
+          <li><span>塗鴉</span><span class="price">NT$ 1,200</span></li>
+          <li><span>精緻上色</span><span class="price">NT$ 2,000</span></li>
+        </ul>
+        <p class="meta">工期：三週</p>
+      </div>
+    </div>
+
+    <div class="panel" id="illust" hidden>
+      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="card">
+        <h3>插圖（非商業價格）</h3>
+        <p>插圖皆為精緻上色，依插圖複雜程度，價格可能往上調漲</p>
+        <ul class="prices">
+          <li><span>半身插圖<small>人物範圍在腰到腿</small></span><span class="price">NT$ 2,500&nbsp;起</span></li>
+          <li><span>全身插圖<small>人物範圍為全身</small></span><span class="price">NT$ 4,000&nbsp;起</span></li>
+        </ul>
+        <p class="meta">工期：一個月</p>
+      </div>
+    </div>
+
+    <div class="panel" id="sticker" hidden>
+      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="card">
+        <h3>貼圖（普通商用價格）</h3>
+        <div class="item">
+          <div class="item-head"><b>商用簡單貼圖</b><span class="big">NT$ 350／張</span></div>
+          <p class="heart-line">一組5張 NT$ 1,700，會依設定複雜程度調漲</p>
+          <p class="meta">工期：一組一週</p>
+        </div>
+        <div class="item">
+          <div class="item-head"><b>商用會員徽章</b><span class="big">NT$ 150／張</span></div>
+          <ul class="list">
+            <li>YouTube會員徽章：6格</li>
+            <li>Twitch訂閱層級徽章：8格</li>
+          </ul>
+          <p class="meta">工期：一組一週</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="vtuber" hidden>
+      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="card">
+        <h3>VTuber皮（普通商用價格）</h3>
+        <div class="item">
+          <div class="item-head"><b>Q版全身V皮</b><span class="big">NT$ 8,000</span></div>
+          <p>含拆建，基本包含黑臉／害羞表情</p>
+          <p class="tier-title addon-title">加購項目</p>
+          <ul class="addons">
+            <li><span class="a-name">獸耳尾巴</span><span class="a-price">+300</span></li>
+            <li><span class="a-name">單件服裝／配件穿脫<small>另外繪製拆建</small></span><span class="a-price">+200</span></li>
+            <li><span class="a-name">多一個表情<small>依表情複雜程度</small></span><span class="a-price">+100～300</span></li>
+            <li><span class="a-name">多一套衣服<small>按鍵切換</small></span><span class="a-price">+1,000</span></li>
+          </ul>
+        </div>
+        <div class="item">
+          <div class="item-head"><b>正比半身V皮</b><span class="big">NT$ 8,000</span></div>
+          <p>含拆建，基本包含黑臉／害羞表情</p>
+          <p class="tier-title addon-title">加購項目</p>
+          <ul class="addons">
+            <li><span class="a-name">獸耳</span><span class="a-price">+400</span></li>
+            <li><span class="a-name">多一個表情<small>依複雜程度調漲</small></span><span class="a-price">+300</span></li>
+            <li><span class="a-name">單件服裝／配件穿脫<small>另外繪製拆建</small></span><span class="a-price">+300～500</span></li>
+            <li><span class="a-name">多一套衣服<small>依複雜程度調漲</small></span><span class="a-price">+1,500</span></li>
+          </ul>
+        </div>
+        <div class="item">
+          <div class="item-head"><b>正比全身V皮</b><span class="big">NT$ 15,000</span></div>
+          <p>含拆建，基本包含黑臉／害羞表情</p>
+          <p class="tier-title addon-title">加購項目</p>
+          <ul class="addons">
+            <li><span class="a-name">獸耳尾巴</span><span class="a-price">+500</span></li>
+            <li><span class="a-name">多一個表情<small>依複雜程度調漲</small></span><span class="a-price">+300</span></li>
+            <li><span class="a-name">單件服裝／配件穿脫<small>另外繪製拆建</small></span><span class="a-price">+300～1,000</span></li>
+            <li><span class="a-name">多一套衣服<small>依複雜程度調漲</small></span><span class="a-price">+2,500</span></li>
+            <li><span class="a-name">底色上色三視圖<small>側面／背面／細節＆裝飾品</small></span><span class="a-price">+4,000</span></li>
+          </ul>
+        </div>
+        <p class="tier-title sep">建模</p>
+        <p>有合作建模師可以做一條龍（依建模需求估價）</p>
+        <p class="meta">V皮工期：1～2個月</p>
+      </div>
+    </div>
+
+    <div class="panel" id="gummy" hidden>
+      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="card">
+        <h3>軟糖（非商業價格）</h3>
+        <ul class="prices">
+          <li><span>軟糖</span><span class="price">NT$&nbsp;150&nbsp;起</span></li>
+        </ul>
+        <ul class="list">
+          <li>一律為純底色塗鴉，完成度如圖</li>
+          <li>可指定動作，但軟糖比例問題，能做的動作不大</li>
+        </ul>
+      </div>
+    </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section roomy">
+    <div class="sec-title">
+      
+      <h2>授權用途是什麼意思？</h2>
+      <p>角色繪製與插圖的價格是非商業價格，有其他用途時，依用途乘上倍率</p>
+    </div>
+    <div class="lic">
+      <div class="card"><span class="chip dot">價目表基本價</span><h3>非商業</h3><p>個人收藏使用、同人非營利作品使用、可縮放裁切、可註明出處後發布</p></div>
+      <div class="card"><span class="chip">非商×2</span><h3>普通商用</h3><p>發文、分享，以及印製作為免費發放之無料，不用於販售。VTuber、實況者之使用，最低須選擇本等級</p></div>
+      <div class="card"><span class="chip">非商×3</span><h3>營利商用</h3><p>印製作為周邊販售、製作LINE貼圖等有營利行為之用途</p></div>
+      <div class="card"><span class="chip">非商×3～×10</span><h3>買斷</h3><p>委託人不希望作品被公開展示時選擇，分為非商買斷、商用買斷與全買斷</p></div>
+    </div>
+    <p class="center" style="margin-top:36px">不確定該選哪一種？請先看<a class="textlink" href="notice.html">委託須知</a>的授權方面，或委託前直接詢問</p>
+  </section>
+
+  <section class="wrap section roomy">
+    <div class="sec-title order-title"><h2>我要委託</h2><p>請先閱讀委託須知，再使用試算器估價，最後填寫委託表單</p></div>
+    <div class="btns" style="justify-content:center;gap:16px">
+      <a class="btn blue" href="notice.html">委託須知</a>
+      <a class="btn" href="calc.html">委託試算</a>
+      <a class="btn yellow" href="https://forms.gle/DqZ4vbZ2xWnD6j5UA" target="_blank" rel="noopener">委託表單</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="foot">
+    <div class="social">
+      <a href="https://www.facebook.com/profile.php?id=100083111569121" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://www.instagram.com/jessroin_0709/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://x.com/Jessroin" target="_blank" rel="noopener">Twitter</a>
+      <a href="https://www.youtube.com/channel/UCgwQNXVbiRiOYTJgha7Ojbg" target="_blank" rel="noopener">Youtube</a>
+      <a href="https://www.twitch.tv/jessroin" target="_blank" rel="noopener">Twitch</a>
+    </div>
+    <p class="foot-info">回覆時間：平日星期一至五　・　商業合作：<a href="mailto:jessroin0709@gmail.com">jessroin0709@gmail.com</a></p>
+    <p class="copy">© 2026&nbsp;潔諾&nbsp;Jessroin。作品版權所有，請勿未經同意轉載使用。謝謝你來逛逛 ♡</p>
+  </div>
+</footer>
+<script src="gallery.js"></script>
+<script>
+/* 價目表分頁:點上方項目切換內容,網址最後的 #xxx 也能直接開啟對應項目 */
+(function(){
+  var tabs=[].slice.call(document.querySelectorAll('[role=tab]')),panels=[].slice.call(document.querySelectorAll('.panel'));
+
+  /* 範例圖最高不超過螢幕高度的 70% */
+  function setMax(){
+    var max='70vh';
+    document.documentElement.style.setProperty('--car-max',max);
+    [].slice.call(document.querySelectorAll('.example')).forEach(function(e){if(e._fit)e._fit();});
+  }
+  setMax();
+  window.addEventListener('resize',setMax);
+  window.addEventListener('load',setMax);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(setMax);
+
+  /* 第一次打開某個項目時,自動讀取 images/price/項目名稱/ 裡的範例圖。
+     只有 1 張就直接顯示;2 張以上自動變成滑頁(箭頭、圓點、手指左右滑) */
+  function loadExamples(p){
+    var ex=p.querySelector('.example');
+    if(!ex||ex.dataset.loaded)return;
+    ex.dataset.loaded='1';
+    JessGallery.findImages('images/price/'+p.id).then(function(list){
+      if(!list.length)return; /* 沒有圖就保留「範例圖」佔位框 */
+      buildCarousel(ex,list);
+    });
+  }
+
+  function buildCarousel(ex,list){
+    ex.innerHTML='';ex.classList.add('has-img');
+    var wrap=document.createElement('div');wrap.className='carousel';
+    var track=document.createElement('div');track.className='car-track';
+    var slides=list.map(function(item,i){
+      var s=document.createElement('div');s.className='car-slide';
+      var im=document.createElement('img');im.src=item.src;im.alt='範例圖 '+(i+1);
+      s.appendChild(im);track.appendChild(s);return s;
+    });
+    wrap.appendChild(track);ex.appendChild(wrap);
+    var many=list.length>1,prev,next,dots=[];
+    if(many){
+      prev=document.createElement('button');prev.type='button';prev.className='car-btn prev';prev.setAttribute('aria-label','上一張');prev.textContent='‹';
+      next=document.createElement('button');next.type='button';next.className='car-btn next';next.setAttribute('aria-label','下一張');next.textContent='›';
+      wrap.appendChild(prev);wrap.appendChild(next);
+      var dotBox=document.createElement('div');dotBox.className='car-dots';
+      list.forEach(function(_,i){
+        var d=document.createElement('button');d.type='button';d.setAttribute('aria-label','第 '+(i+1)+' 張');
+        d.addEventListener('click',function(){go(i);});
+        dotBox.appendChild(d);dots.push(d);
+      });
+      ex.appendChild(dotBox);
+    }
+    function current(){return Math.max(0,Math.min(list.length-1,Math.round(track.scrollLeft/Math.max(1,track.clientWidth))));}
+    /* 到最後一張再按「下一張」會回到第一張,第一張按「上一張」會跳到最後一張(繞回去時直接跳過去,不會整排滑一遍) */
+    function go(i){
+      var n=list.length,wrapped=(i<0||i>=n);
+      i=((i%n)+n)%n;
+      track.scrollTo({left:i*track.clientWidth,behavior:wrapped?'instant':'smooth'});
+    }
+    /* 更新圓點、箭頭,並讓高度貼合目前這張圖 */
+    function fit(){
+      var i=current();
+      if(slides[i].offsetHeight)track.style.height=slides[i].offsetHeight+'px';
+      if(many){
+        dots.forEach(function(d,k){d.setAttribute('aria-current',k===i);});
+      }
+    }
+    if(many){
+      prev.addEventListener('click',function(){go(current()-1);});
+      next.addEventListener('click',function(){go(current()+1);});
+      track.addEventListener('scroll',fit);
+    }
+    window.addEventListener('resize',fit);
+    ex._fit=fit;fit();
+  }
+
+  function show(id){
+    tabs.forEach(function(t){t.setAttribute('aria-selected',t.dataset.tab===id);});
+    panels.forEach(function(p){
+      p.hidden=(p.id!==id);
+      if(p.id===id){loadExamples(p);var e=p.querySelector('.example');if(e&&e._fit)e._fit();}
+    });
+  }
+  tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.tab);history.replaceState(null,'','#'+t.dataset.tab);});});
+  var h=location.hash.slice(1);
+  show(h&&document.getElementById(h)&&document.getElementById(h).classList.contains('panel')?h:'doodle');
+})();
+</script>
+</body>
+</html>

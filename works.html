@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script src="loader.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>作品集 | 潔諾Jessroin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+/* VTuber 資訊卡 */
+.masonry[hidden],.vgrid[hidden]{display:none}
+.vgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:26px 22px;max-width:780px;margin:0 auto}
+/* 外框沿用其他圖片的拍立得風格(白底、細框、圓角、淡陰影、微微歪斜);比例都用卡片寬度(cqw)換算,縮放時字會跟著等比縮放 */
+.vcard{margin:0;container-type:inline-size}
+.vcard:nth-child(3n+1){--r:-1.2deg}.vcard:nth-child(3n+2){--r:1deg}
+.vc-box{background:#fff;border:var(--edge);border-radius:14px;box-shadow:var(--soft);padding:10px;transform:rotate(var(--r,0deg))}
+.vc-head{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:2cqw;margin-bottom:8px;padding:.6cqw 2.5cqw;border-radius:8px;background:var(--vc);color:var(--cocoa)}
+.vc-head::before{content:""}
+.vc-name{grid-column:2;font-size:1.15rem;font-size:min(6cqw,calc(50cqw / var(--n,4)));font-weight:700;line-height:1.6;text-align:center;overflow-wrap:anywhere}
+.vc-side{grid-column:3;justify-self:end;display:flex;align-items:center;gap:1.4cqw}
+.vc-tag{font-size:.8rem;font-size:3.8cqw;font-weight:700;line-height:1.4;opacity:.72;white-space:nowrap}
+.vc-link{display:grid;place-items:center;width:20px;height:20px;width:max(20px,5cqw);height:max(20px,5cqw);color:#14171A;border-radius:50%}
+.vc-link:hover{color:var(--berry)}
+.vc-link svg{width:100%;height:100%;fill:currentColor}
+.vc-shot{position:relative;aspect-ratio:16/15;background:#fff;border-radius:8px;overflow:hidden}
+.vc-open{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:#fff;cursor:zoom-in;display:block}
+.vc-open img{width:100%;height:100%;object-fit:cover;object-position:center 25%;display:block}
+.vc-empty{position:absolute;inset:0;display:grid;place-items:center;font-size:.9rem;opacity:.55;background:#fff}
+.vc-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:34px;height:34px;border:0;border-radius:50%;background:rgba(255,255,255,.78);color:var(--cocoa);font:inherit;font-size:1.5rem;line-height:1;padding:0 0 3px;cursor:pointer}
+.vc-nav:hover{background:#fff;color:var(--berry)}
+.vc-nav.prev{left:8px}.vc-nav.next{right:8px}
+@media(max-width:560px){.vgrid{grid-template-columns:1fr}}
+/* 放大檢視 */
+.lb{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:56px 64px;background:rgba(60,28,40,.86)}
+.lb[hidden]{display:none}
+.lb-img{max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;background:#fff;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.lb-btn{position:absolute;border:0;border-radius:50%;width:42px;height:42px;background:#fff;color:var(--cocoa);font:inherit;font-size:1.6rem;line-height:1;padding:0 0 3px;cursor:pointer}
+.lb-btn:hover{color:var(--berry)}
+.lb-close{top:12px;right:14px;font-size:1.4rem;padding:0}
+.lb-prev{left:12px;top:50%;transform:translateY(-50%)}.lb-next{right:12px;top:50%;transform:translateY(-50%)}
+.lb-cap{position:absolute;left:0;right:0;bottom:14px;text-align:center;color:#fff;font-weight:700;line-height:1.6;padding:0 70px}
+@media(max-width:560px){.lb{padding:56px 12px 60px}.lb-prev{left:6px}.lb-next{right:6px}}
+</style>
+</head>
+<body>
+
+<header>
+  <nav aria-label="主選單">
+    <a class="logo" href="index.html">潔諾&nbsp;Jessroin</a>
+    <ul>
+        <li><a href="index.html">首頁</a></li>
+        <li><a href="notice.html">委託須知</a></li>
+        <li><a href="price.html">委託價目表</a></li>
+        <li><a href="works.html" aria-current="page">作品集</a></li>
+        <li><a href="partners.html">合作夥伴</a></li>
+    </ul>
+    <a class="btn sm" href="calc.html">委託試算</a>
+  </nav>
+</header>
+
+<main>
+  <div class="page-head"><h1>作品集</h1></div>
+
+  <section class="wrap section" style="padding-top:0">
+    <div class="filters"><button type="button" data-f="all" aria-pressed="true">全部</button><button type="button" data-f="qq" aria-pressed="false">QQ人</button><button type="button" data-f="illust" aria-pressed="false">插圖</button><button type="button" data-f="vtuber" aria-pressed="false">VTuber皮</button><button type="button" data-f="motion" aria-pressed="false">動態展示</button></div>
+
+    <!-- 作品會自動從資料夾讀取,不用改這個檔案:
+         images/works/qq/      QQ人
+         images/works/illust/  插圖
+         每個資料夾裡的圖片命名為 01.jpg、02.jpg、03.jpg…(數字要連續)
+         VTuber皮 是資訊卡,設定在下面 script 裡的 VTUBERS,圖放 images/works/vtuber/<id>/ -->
+    <div class="masonry" id="gallery"></div>
+    <div class="vgrid" id="vgrid" hidden></div>
+    <p class="gallery-msg" id="msg">作品載入中…</p>
+  </section>
+</main>
+
+<footer>
+  <div class="foot">
+    <div class="social">
+      <a href="https://www.facebook.com/profile.php?id=100083111569121" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://www.instagram.com/jessroin_0709/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://x.com/Jessroin" target="_blank" rel="noopener">Twitter</a>
+      <a href="https://www.youtube.com/channel/UCgwQNXVbiRiOYTJgha7Ojbg" target="_blank" rel="noopener">Youtube</a>
+      <a href="https://www.twitch.tv/jessroin" target="_blank" rel="noopener">Twitch</a>
+    </div>
+    <p class="foot-info">回覆時間：平日星期一至五　・　商業合作：<a href="mailto:jessroin0709@gmail.com">jessroin0709@gmail.com</a></p>
+    <p class="copy">© 2026&nbsp;潔諾&nbsp;Jessroin。作品版權所有，請勿未經同意轉載使用。謝謝你來逛逛 ♡</p>
+  </div>
+</footer>
+
+<script src="gallery.js"></script>
+<script>
+(function(){
+  /* ===== 要調整的設定都在這一區 ===== */
+
+  /* 圖片分類:id 是資料夾名稱,name 是顯示在作品下方的小標。順序就是「全部」裡的排列順序 */
+  var CATS=[
+    {id:'illust', name:'插圖'},
+    {id:'qq',     name:'QQ人'}
+  ];
+
+  /* VTuber皮:每位一張資訊卡(只會出現在「VTuber皮」分類裡)。
+     新增一位 = 在下面多加一行 + 把圖放進 images/works/vtuber/<id>/ 資料夾
+     圖片命名 01.jpg、02.jpg、03.jpg…:01 是卡片上的封面,其餘的點左右箭頭、或點開圖片就能看
+     id:資料夾名稱(用英文或數字)　name:名字　tag:名字右邊的小字,例如 個人勢、虛書(不要可省略)
+     url:連結,Twitter/X、YouTube 都可以(沒有可省略)　color:卡片顏色(可省略,會自動配色) */
+  var VTUBERS=[
+    /* {id:'example', name:'範例角色', tag:'個人勢', url:'https://x.com/xxxx', color:'#E3677F'}, */
+  {id:'mikado', name:'御門恵良', color:'#CDBEEA'},
+  {id:'akagi',  name:'赤城瑠乃', color:'#EEA1B0'},
+  {id:'buride', name:'布里德', color:'#C4DDD5'},
+  {id:'hinomi', name:'火ノ見一真', color:'#D3E2FC'},
+  {id:'scar',   name:'斯卡爾', color:'#BACAF1'},
+  ];
+
+  /* 動態展示影片:影片放在 videos/motion/ 資料夾。
+     新增影片 = 放進檔案 + 在下面多加一行(file 是檔名、title 是小標、url 是點小標會去的連結,沒有連結就不用寫 url) */
+  var VIDEOS=[
+    {file:'01.mp4', title:'emoTV永不普及待機畫面'},
+    {file:'02.mp4', title:'ミミ待機畫面'},
+    {file:'03.mp4', title:'璃貓Leemao《粛聖!!ロリ神レクイエム☆》', url:'https://www.youtube.com/watch?v=kC-1602tmvY'},
+    {file:'04.mp4', title:'Phantom《雪の音》', url:'https://www.youtube.com/watch?v=h3VUIjRhXe0'},
+    {file:'05.mp4', title:'雪狼阿茶&ORI 禮《迷人的危險》', url:'https://www.youtube.com/watch?v=mJzbweQiWR4'},
+    {file:'06.mp4', title:'貓葉みのり《わたしの一番かわいいところ》', url:'https://www.youtube.com/watch?v=jR6jmVAc5qk'},
+    {file:'07.mp4', title:'虛書《Blessing》', url:'https://www.youtube.com/watch?v=jlgJZ3r-6gg'}
+  ];
+
+  /* true = 編號大的(新的)排前面;false = 01 排最前面 */
+  var NEWEST_FIRST=false;
+
+  /* true = 「全部」裡插圖和 QQ人 交錯混排,並自動挑出格線最整齊的順序;false = 照上面分類順序一類接一類。
+     (點進單一分類時,永遠照 01、02、03… 的順序) */
+  var MIX=true;
+
+  /* 寬高比大於等於這個數字就算橫式,會佔 2 格寬(放大一倍)。1.15 約等於稍微偏橫的圖 */
+  var WIDE_RATIO=1.15;
+
+  /* ===== 以下不用改 ===== */
+  var box=document.getElementById('gallery'),vbox=document.getElementById('vgrid'),msg=document.getElementById('msg');
+  var btns=[].slice.call(document.querySelectorAll('.filters button')),current='all';
+
+  function el(tag,cls){var e=document.createElement(tag);if(cls)e.className=cls;return e;}
+
+  function addImage(e){
+    var cat=e.cat,item=e.item;
+    var f=el('figure','polaroid');f.dataset.cat=cat.id;f.hidden=true;
+    f.dataset.nat=e.nat;f.dataset.mix=e.mix; /* nat = 分類內原本順序、mix = 「全部」混排順序 */
+    if(item.w/item.h>=WIDE_RATIO)f.classList.add('wide'); /* 橫式圖:放大顯示 */
+    var shot=el('div','shot');shot.style.setProperty('--ar',item.w+'/'+item.h);
+    var im=el('img');im.src=item.src;im.alt=cat.name+' '+(e.idx+1);
+    shot.appendChild(im);f.appendChild(shot);
+    box.appendChild(f);
+  }
+
+  function addVideo(v,i){
+    var f=el('figure','polaroid');f.dataset.cat='motion';f.hidden=true;
+    f.dataset.nat=f.dataset.mix=1000+i;
+    var shot=el('div','shot');shot.style.setProperty('--ar','16/9');
+    var vid=el('video');vid.controls=true;vid.setAttribute('playsinline','');vid.preload='metadata';
+    vid.setAttribute('aria-label',v.title);vid.src='videos/motion/'+v.file;
+    vid.addEventListener('loadedmetadata',function(){
+      if(vid.videoWidth&&vid.videoHeight){
+        shot.style.setProperty('--ar',vid.videoWidth+'/'+vid.videoHeight);
+        f.style.maxWidth=(vid.videoWidth>=vid.videoHeight)?'760px':'380px';
+        layout();
+      }
+    });
+    vid.addEventListener('error',function(){
+      shot.textContent='';
+      var t=el('div','video-error');t.textContent='這支影片無法播放:請確認檔案存在,且是 MP4(H.264)格式';
+      shot.appendChild(t);
+      layout();
+    });
+    shot.appendChild(vid);f.appendChild(shot);
+    var cap=el('figcaption');
+    if(v.url){var a=el('a');a.href=v.url;a.target='_blank';a.rel='noopener';a.textContent=v.title;cap.appendChild(a);}
+    else cap.textContent=v.title;
+    f.appendChild(cap);box.appendChild(f);
+  }
+
+  /* ===== VTuber 資訊卡 ===== */
+  var VPALETTE=['#EEA1B0','#BACAF1','#D3E2FC','#C4DDD5','#CDBEEA','#F7DDAC'];
+  var ICON_X='<svg viewBox="0 0 512 512" aria-hidden="true"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>';
+  var ICON_LINK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.6 13.4a1 1 0 0 1 0-1.4l3.5-3.5a3 3 0 0 1 4.2 4.2l-2 2a1 1 0 1 1-1.4-1.4l2-2a1 1 0 0 0-1.4-1.4L12 13.4a1 1 0 0 1-1.4 0zM13.4 10.6a1 1 0 0 1 0 1.4l-3.5 3.5a3 3 0 0 1-4.2-4.2l2-2a1 1 0 1 1 1.4 1.4l-2 2a1 1 0 0 0 1.4 1.4l3.5-3.5a1 1 0 0 1 1.4 0z"/></svg>';
+
+  /* 放大檢視:點卡片上的圖會打開,可用左右箭頭 / 鍵盤 ← → 切換,Esc 或點外面關閉 */
+  var lb=null,lbState=null,lbOpener=null;
+  function lbShow(k){
+    var s=lbState,n=s.imgs.length;
+    s.cur=(k+n)%n;
+    lb.img.src=s.imgs[s.cur].src;lb.img.alt=s.name+' '+(s.cur+1);
+    lb.cap.textContent=s.name+(n>1?'　'+(s.cur+1)+' / '+n:'');
+    lb.prev.hidden=lb.next.hidden=(n<2);
+  }
+  function lbClose(){
+    if(!lb||lb.root.hidden)return;
+    lb.root.hidden=true;document.body.style.overflow='';
+    document.removeEventListener('keydown',lbKey);
+    if(lbOpener)lbOpener.focus();
+  }
+  function lbKey(e){
+    if(e.key==='Escape')lbClose();
+    else if(e.key==='ArrowLeft')lbShow(lbState.cur-1);
+    else if(e.key==='ArrowRight')lbShow(lbState.cur+1);
+  }
+  function lbOpen(name,imgs,start,opener){
+    if(!lb){
+      var root=el('div','lb');root.hidden=true;root.setAttribute('role','dialog');root.setAttribute('aria-modal','true');
+      var img=el('img','lb-img'),cap=el('div','lb-cap');
+      var close=el('button','lb-btn lb-close');close.type='button';close.textContent='✕';close.setAttribute('aria-label','關閉');
+      var prev=el('button','lb-btn lb-prev');prev.type='button';prev.textContent='‹';prev.setAttribute('aria-label','上一張');
+      var next=el('button','lb-btn lb-next');next.type='button';next.textContent='›';next.setAttribute('aria-label','下一張');
+      [img,cap,close,prev,next].forEach(function(x){root.appendChild(x);});
+      root.addEventListener('click',function(e){if(e.target===root||e.target===cap)lbClose();});
+      close.addEventListener('click',lbClose);
+      prev.addEventListener('click',function(){lbShow(lbState.cur-1);});
+      next.addEventListener('click',function(){lbShow(lbState.cur+1);});
+      document.body.appendChild(root);
+      lb={root:root,img:img,cap:cap,close:close,prev:prev,next:next};
+    }
+    lbState={name:name,imgs:imgs,cur:0};lbOpener=opener;
+    lbShow(start);
+    lb.root.hidden=false;document.body.style.overflow='hidden';
+    document.addEventListener('keydown',lbKey);
+    lb.close.focus();
+  }
+
+  function addVtuber(v,imgs,i){
+    if(NEWEST_FIRST)imgs=imgs.slice().reverse();
+    var n=imgs.length,cur=0;
+    var f=el('figure','vcard'),box2=el('div','vc-box');
+    f.style.setProperty('--vc',v.color||VPALETTE[i%VPALETTE.length]);
+    f.style.setProperty('--n',Math.max(1,Array.from(v.name).length)); /* 名字越長,字會自動縮小,維持一行 */
+    var head=el('div','vc-head'),nm=el('span','vc-name');nm.textContent=v.name;head.appendChild(nm);
+    var side=el('div','vc-side');
+    if(v.tag){var tg=el('span','vc-tag');tg.textContent=v.tag;side.appendChild(tg);}
+    if(v.url){
+      var a=el('a','vc-link');a.href=v.url;a.target='_blank';a.rel='noopener';
+      a.setAttribute('aria-label',v.name+' 的連結');
+      a.innerHTML=/(^|\/\/|\.)(twitter\.com|x\.com)\//i.test(v.url)?ICON_X:ICON_LINK;
+      side.appendChild(a);
+    }
+    if(side.children.length)head.appendChild(side);
+    box2.appendChild(head);
+    var shot=el('div','vc-shot');
+    if(!n){
+      var em=el('div','vc-empty');em.textContent='圖片準備中';shot.appendChild(em);
+    }else{
+      var open=el('button','vc-open');open.type='button';open.setAttribute('aria-label','放大檢視 '+v.name);
+      var im=el('img');open.appendChild(im);shot.appendChild(open);
+      var show=function(k){cur=(k+n)%n;im.src=imgs[cur].src;im.alt=v.name+' '+(cur+1);};
+      show(0);
+      open.addEventListener('click',function(){lbOpen(v.name,imgs,cur,open);});
+      if(n>1){
+        var pv=el('button','vc-nav prev');pv.type='button';pv.textContent='‹';pv.setAttribute('aria-label','上一張');
+        var nx=el('button','vc-nav next');nx.type='button';nx.textContent='›';nx.setAttribute('aria-label','下一張');
+        pv.addEventListener('click',function(){show(cur-1);});
+        nx.addEventListener('click',function(){show(cur+1);});
+        shot.appendChild(pv);shot.appendChild(nx);
+      }
+    }
+    box2.appendChild(shot);f.appendChild(box2);vbox.appendChild(f);
+  }
+
+  /* 「全部」的混排:讓各分類輪流出現(插圖、QQ人、插圖、QQ人…),
+     再用固定亂數試很多種排法,挑出 3 欄格線裡空隙最少、底部最齊的一種。結果每次開網頁都一樣 */
+  function mixOrder(groups){
+    var COLW=(1000-44)/3,ROWH=8,NC=3;
+    function cell(e){
+      var wide=e.item.w/e.item.h>=WIDE_RATIO,cw=wide?COLW*2+22:COLW;
+      return {c:wide?2:1,r:Math.ceil(((cw-20)*e.item.h/e.item.w+23+24)/ROWH)};
+    }
+    var slots=[],max=0,total=0,i,k;
+    groups.forEach(function(g){if(g.length>max)max=g.length;});
+    for(k=0;k<max;k++)groups.forEach(function(g,gi){if(k<g.length)slots.push(gi);});
+    groups.forEach(function(g){g.forEach(function(e){e.cell=cell(e);total+=e.cell.r;});});
+    var rng=(function(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};})(20240601);
+    function score(seq){ /* 模擬瀏覽器 dense 排法,回傳「空隙 + 底部落差」(越小越好) */
+      var occ=[],c,rows=total+4;
+      for(c=0;c<NC;c++)occ.push(new Uint8Array(rows));
+      seq.forEach(function(e){
+        var w=e.cell.c,h=e.cell.r,bestR=1e9,bestC=0,c0,run,row,start;
+        for(c0=0;c0+w<=NC;c0++){
+          run=0;start=-1;
+          for(row=0;row<rows;row++){
+            var free=occ[c0][row]===0&&(w===1||occ[c0+1][row]===0);
+            if(free){if(run===0)start=row;run++;if(run>=h)break;}else run=0;
+          }
+          if(run>=h&&start<bestR){bestR=start;bestC=c0;}
+        }
+        for(row=bestR;row<bestR+h;row++)for(c=bestC;c<bestC+w;c++)occ[c][row]=1;
+      });
+      var bots=[],gaps=0,r;
+      for(c=0;c<NC;c++){
+        var b=0;for(r=0;r<rows;r++)if(occ[c][r])b=r+1;
+        bots.push(b);for(r=0;r<b;r++)if(!occ[c][r])gaps++;
+      }
+      return (gaps+Math.max.apply(null,bots)-Math.min.apply(null,bots))*ROWH;
+    }
+    function build(lists){var pos=lists.map(function(){return 0;});return slots.map(function(gi){return lists[gi][pos[gi]++];});}
+    var best=build(groups),bestScore=score(best);
+    var trials=Math.max(200,Math.min(2500,Math.floor(40000/Math.max(1,slots.length))));
+    for(i=0;i<trials;i++){
+      var lists=groups.map(function(g){
+        var a=g.slice(),j,x,y;
+        for(j=a.length-1;j>0;j--){x=Math.floor(rng()*(j+1));y=a[j];a[j]=a[x];a[x]=y;}
+        return a;
+      });
+      var seq=build(lists),sc=score(seq);
+      if(sc<bestScore){bestScore=sc;best=seq;}
+    }
+    return best;
+  }
+
+  /* 依每張卡片的實際高度,算出它要佔幾個 8px 的列,做出錯落排列 */
+  function layout(){
+    var rowH=8,gap=24;
+    [].slice.call(box.children).forEach(function(w){
+      if(w.hidden)return;
+      w.style.gridRowEnd='auto';
+      w.style.gridRowEnd='span '+Math.ceil((w.offsetHeight+gap)/rowH);
+    });
+  }
+
+  function apply(){
+    var n=0,isV=(current==='vtuber');
+    box.hidden=isV;vbox.hidden=!isV;
+    if(isV)n=vbox.children.length;
+    [].slice.call(box.children).forEach(function(w){
+      var hide=(current==='all')?(w.dataset.cat==='motion'):(w.dataset.cat!==current);
+      w.hidden=hide;
+      w.style.order=(current==='all')?w.dataset.mix:w.dataset.nat; /* 全部=混排順序;單一分類=原本順序 */
+      if(hide){var v=w.querySelector('video');if(v)v.pause();}else if(!isV)n++;
+    });
+    msg.textContent='這個分類還沒有作品,敬請期待 ♡';
+    msg.hidden=n>0;
+    layout();
+  }
+
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    current=b.dataset.f;
+    btns.forEach(function(x){x.setAttribute('aria-pressed',x===b);});
+    apply();
+  });});
+
+  var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(layout,100);});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layout);
+  window.addEventListener('load',layout);
+
+  Promise.all(CATS.map(function(c){return JessGallery.findImages('images/works/'+c.id);}).concat(
+    VTUBERS.map(function(v){return JessGallery.findImages('images/works/vtuber/'+v.id);})
+  )).then(function(res){
+    var all=res.slice(0,CATS.length),vimgs=res.slice(CATS.length);
+    VTUBERS.forEach(function(v,i){addVtuber(v,vimgs[i],i);});
+    var groups=all.map(function(list,ci){
+      if(NEWEST_FIRST)list=list.slice().reverse();
+      return list.map(function(item,i){return {cat:CATS[ci],item:item,idx:NEWEST_FIRST?list.length-1-i:i};});
+    });
+    var n=0;
+    groups.forEach(function(g){g.forEach(function(e){e.nat=n++;});});
+    var seq=MIX?mixOrder(groups):[].concat.apply([],groups);
+    seq.forEach(function(e,k){e.mix=k;});
+    groups.forEach(function(g){g.forEach(addImage);});
+    var vs=NEWEST_FIRST?VIDEOS.slice().reverse():VIDEOS;
+    vs.forEach(addVideo);
+    apply();
+  });
+})();
+</script>
+</body>
+</html>
