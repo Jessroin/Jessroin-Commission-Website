@@ -1,29 +1,12 @@
 /* =====================================================================
    i18n.js  —  潔諾Jessroin 網站的語言切換(中文 / English / 日本語 / 한국어)
-
-   怎麼用:
-   1. 把這個檔案和 index.html 放在同一個資料夾。
-   2. 每一頁的 <head> 裡(loader.js 那行下面)加上這一行:
-        <script src="i18n.js" defer></script>
-   3. 網頁右上角就會自動出現語言按鈕,訪客選的語言會被記住,換頁也不會跑掉。
-
-   原理:這個檔案會自動找出頁面上的中文,對照下面的翻譯表換成其他語言。
-   所以 HTML 裡的中文不用改、也不用加任何標記;選回「中文」就會還原。
-
-   要新增或修改翻譯:找到下面的「翻譯表」,照這個格式加一行就好
-        ['中文原文', 'English', '日本語', '한국어'],
-   注意:
-   - 第一個(中文原文)要和網頁上的文字「一字不差」(標點、空格都要一樣)。
-   - 最後一行以外,每行結尾都要有逗號。
-   - 文字裡不要用半形單引號 ' ,英文的撇號請用 ’ 。
    ===================================================================== */
 (function () {
   'use strict';
 
-  /* ========== 基本設定 ========== */
-  var DEFAULT_LANG = 'zh';   // 第一次來的訪客看到的語言:zh / en / ja / ko
-  var AUTO_DETECT  = false;  // true = 第一次來時,依訪客瀏覽器語言自動選(日文→日、韓文→韓、英文→英)
-  var FLOATING     = false;  // true = 語言按鈕改成浮在畫面左下角(不放在選單列)
+  var DEFAULT_LANG = 'zh';   // 預設語言: zh / en / ja / ko
+  var AUTO_DETECT  = false;  
+  var FLOATING     = false;  
   var STORE_KEY    = 'jess-lang';
 
   var LANGS = [
@@ -34,12 +17,8 @@
   ];
   var IDX = { en: 1, ja: 2, ko: 3 };
 
-  /* =====================================================================
-     翻譯表   格式:[ 中文, English, 日本語, 한국어 ]
-     文字中的 \n 代表「換行(<br>)」,翻譯也要有同樣數量的 \n
-     ===================================================================== */
+  /* 翻譯表: [ 中文, English, 日本語, 한국어 ] */
   var D = [
-
     /* ---------- 共用:選單、頁尾 ---------- */
     ['首頁', 'Home', 'ホーム', '홈'],
     ['委託須知', 'Commission Info', 'ご依頼について', '커미션 안내'],
@@ -52,7 +31,7 @@
     ['回覆時間：平日星期一至五 ・ 商業合作：',
       'Reply hours: Mon–Fri ・ Business inquiries: ',
       '返信時間：平日（月〜金） ・ お仕事のご相談：',
-      '답장 시간: 평일 월~금 ・ 비즈니스 문의: '],
+      '답장時間: 평일 월~금 ・ 비즈니스 문의: '],
     ['© 2026 潔諾 Jessroin。作品版權所有，請勿未經同意轉載使用。謝謝你來逛逛 ♡',
       '© 2026 潔諾 Jessroin. All artwork is copyrighted. Please do not repost or use it without permission. Thanks for stopping by ♡',
       '© 2026 潔諾 Jessroin。作品の著作権は作者に帰属します。無断転載・無断使用はご遠慮ください。ご覧いただきありがとうございます ♡',
@@ -60,24 +39,23 @@
 
     /* ---------- 首頁 ---------- */
     ['作品集&委託價目表', 'Portfolio & Price List', '作品集＆料金表', '포트폴리오 & 가격표'],
-    ['潔諾Jessroin的作品集與委託價目表。承接正比、Q版、貼圖、塗鴉、插圖、VTuber皮。',
-      'Portfolio and commission price list of Jessroin. Open for regular-proportion characters, chibi, stickers, doodles, illustrations and VTuber skins.',
-      'Jessroin（潔諾）の作品集と料金表。等身キャラ、ちびキャラ、スタンプ、ラクガキ、イラスト、VTuberガワを承ります。',
-      'Jessroin(潔諾)의 포트폴리오와 커미션 가격표. 일반 비율 캐릭터, 치비, 스티커, 낙서, 일러스트, VTuber 스킨 작업을 받습니다.'],
+    ['潔諾Jessroin的作品集與委託價目表。承接正比、Q版、貼圖、塗鴉、插圖、VTuber。',
+      'Portfolio and commission price list of Jessroin. Open for regular-proportion characters, chibi, stickers, doodles, illustrations and VTuber.',
+      'Jessroin（潔諾）の作品集と料金表。等身キャラ、ちびキャラ、スタンプ、ラクガキ、イラスト、VTuberを承ります。',
+      'Jessroin(潔諾)의 포트폴리오와 커미션 가격표. 일반 비율 캐릭터, 치비, 스티커, 낙서, 일러스트, VTuber 작업을 받습니다.'],
     ['潔諾的頭像', 'Avatar of Jessroin', '潔諾のアイコン', 'Jessroin의 프로필 이미지'],
     ['委託開放中', 'Commissions open', '依頼受付中', '커미션 오픈 중'],
     ['委託滿檔中', 'Commissions full', '依頼は満枠です', '커미션 마감'],
     ['目前滿檔', 'Currently full', '現在満枠です', '현재 마감'],
-    ['哈囉～這裡是', 'Hi there~ I’m ', 'はじめまして、', '안녕하세요~ '],
-    ['！', '!', 'です！', '입니다!'],
+    ['哈囉～這裡是潔諾！', 'Hello~ I’m Jessroin!', 'こんにちは～ 潔諾です！', '안녕하세요~ 潔諾입니다!'],
     ['目前有8年接案經歷，是一位獨立遊戲創作者！',
       'I have 8 years of commission experience, and I’m an indie game creator!',
       '8年間の受注制作の経験があるインディーゲームクリエイターです！',
       '8년간의 커미션 작업 경력을 가진 인디 게임 크리에이터입니다!'],
-    ['角色設計 ・ 插畫 ・ Q版人物 ・ VTuber V皮',
-      'Character design ・ Illustration ・ Chibi characters ・ VTuber skins',
-      'キャラクターデザイン ・ イラスト ・ ちびキャラ ・ VTuberガワ',
-      '캐릭터 디자인 ・ 일러스트 ・ 치비 캐릭터 ・ VTuber 스킨'],
+    ['角色設計 ・ 插畫 ・ Q版人物 ・ VTuber',
+      'Character design ・ Illustration ・ Chibi characters ・ VTuber',
+      'キャラクターデザイン ・ イラスト ・ ちびキャラ ・ VTuber',
+      '캐릭터 디자인 ・ 일러스트 ・ 치비 캐릭터 ・ VTuber'],
     ['看作品', 'View works', '作品を見る', '작품 보기'],
 
     /* ---------- 委託須知 ---------- */
@@ -94,10 +72,10 @@
       'All prices on the price list are for non-commercial commissions',
       '料金表の価格はすべて非商用のご依頼の場合の価格です',
       '가격표의 금액은 모두 비상업 커미션 기준입니다'],
-    ['VTuber皮價錢皆為普通商用委託',
-      'VTuber skin prices are for standard commercial use',
-      'VTuberガワの価格はすべて「通常商用」ライセンス込みの価格です',
-      'VTuber 스킨 가격은 모두 일반 상업 이용 기준입니다'],
+    ['VTuber價錢皆為普通商用委託',
+      'VTuber prices are for standard commercial use',
+      'VTuberの価格はすべて「通常商用」ライセンス込みの価格です',
+      'VTuber 가격은 모두 일반 상업 이용 기준입니다'],
     ['價錢依委託項目複雜程度做調漲，雙人為普通價格×2，多人價格另外討論',
       'Prices may increase depending on the complexity of the request. Two characters cost 2× the regular price; for three or more, the price is discussed separately',
       '依頼内容の複雑さに応じて料金が上がる場合があります。2人の場合は通常料金×2、3人以上は別途ご相談ください',
@@ -259,7 +237,7 @@
     ['全部', 'All', 'すべて', '전체'],
     ['QQ人', 'Chibi', 'ちびキャラ', '치비'],
     ['插圖', 'Illustrations', 'イラスト', '일러스트'],
-    ['VTuber皮', 'VTuber skins', 'VTuberガワ', 'VTuber 스킨'],
+    ['VTuber', 'VTuber', 'VTuber', 'VTuber'],
     ['動態展示', 'Motion', 'モーション', '모션'],
     ['作品載入中…', 'Loading works…', '作品を読み込み中…', '작품 불러오는 중…'],
     ['這個分類還沒有作品,敬請期待 ♡', 'No works in this category yet — stay tuned ♡', 'このカテゴリにはまだ作品がありません。お楽しみに ♡', '이 카테고리에는 아직 작품이 없어요. 기대해 주세요 ♡'],
@@ -299,10 +277,10 @@
     ['YT 徽章 (6格)', 'YT Badges (6 slots)', 'YTバッジ（6枠）', 'YT 배지 (6칸)'],
     ['Twitch訂閱徽章 (8格組)', 'Twitch Sub Badge Set (8 slots)', 'Twitchサブスクバッジ（8枠セット）', 'Twitch 구독 배지 (8칸 세트)'],
     ['Twitch 徽章 (8格)', 'Twitch Badges (8 slots)', 'Twitchバッジ（8枠）', 'Twitch 배지 (8칸)'],
-    ['V皮', 'VTuber Skin', 'VTuberガワ', 'VTuber 스킨'],
-    ['Q版全身V皮', 'Chibi Full-body VTuber Skin', 'ちびキャラ全身ガワ', '치비 전신 VTuber 스킨'],
-    ['正比半身V皮', 'Regular-proportion Half-body VTuber Skin', '通常頭身の半身ガワ', '일반 비율 반신 VTuber 스킨'],
-    ['正比全身V皮', 'Regular-proportion Full-body VTuber Skin', '通常頭身の全身ガワ', '일반 비율 전신 VTuber 스킨'],
+    ['VTuber', 'VTuber', 'VTuber', 'VTuber'],
+    ['Q版全身VTuber', 'Chibi Full-body VTuber', 'ちびキャラ全身VTuber', '치비 전신 VTuber'],
+    ['正比半身VTuber', 'Regular-proportion Half-body VTuber', '通常頭身の半身VTuber', '일반 비율 반신 VTuber'],
+    ['正比全身VTuber', 'Regular-proportion Full-body VTuber', '通常頭身の全身VTuber', '일반 비율 전신 VTuber'],
     ['Q版全身拆建模型 - 快速加購選項：', 'Chibi full-body model (layer separation & build) – quick add-ons:', 'ちびキャラ全身モデル（パーツ分け・構築）- クイック追加オプション：', '치비 전신 모델(파츠 분리·제작) - 빠른 추가 옵션:'],
     ['半身拆建模型 - 快速加購選項：', 'Half-body model (layer separation & build) – quick add-ons:', '半身モデル（パーツ分け・構築）- クイック追加オプション：', '반신 모델(파츠 분리·제작) - 빠른 추가 옵션:'],
     ['全身拆建模型 - 快速加購選項：', 'Full-body model (layer separation & build) – quick add-ons:', '全身モデル（パーツ分け・構築）- クイック追加オプション：', '전신 모델(파츠 분리·제작) - 빠른 추가 옵션:'],
@@ -394,7 +372,7 @@
       '먼저 커미션 안내를 읽고, 견적 계산기로 금액을 확인한 뒤, 마지막으로 의뢰 폼을 작성해 주세요'],
     ['委託表單', 'Commission Form', '依頼フォーム', '의뢰 폼'],
 
-    /* 試算器的提示訊息 */
+    /* 提示訊息 */
     ['已複製文字結算單！', 'Text receipt copied!', 'テキストをコピーしました！', '텍스트 견적서를 복사했어요!'],
     ['已成功下載結算單圖片！', 'Receipt image downloaded!', '画像をダウンロードしました！', '견적서 이미지를 다운로드했어요!'],
     ['生成圖片失敗，請重試', 'Failed to create the image. Please try again', '画像の作成に失敗しました。もう一度お試しください', '이미지 생성에 실패했어요. 다시 시도해 주세요'],
@@ -404,7 +382,7 @@
     ['已清空結算單', 'Receipt cleared', 'お見積書をクリアしました', '견적서를 비웠어요'],
     ['已自結算單移除項目', 'Item removed from the receipt', 'お見積書から項目を削除しました', '견적서에서 항목을 삭제했어요'],
 
-    /* 試算器:複製出去的文字結算單 / 下載的圖片 */
+    /* 複製文字 / 下載圖片內容 */
     ['【委託估價明細】', '【Commission Estimate】', '【ご依頼のお見積り】', '【커미션 견적 내역】'],
     ['底價：', 'Base price: ', '基本料金：', '기본 가격: '],
     ['授權：', 'License: ', 'ライセンス：', '라이선스: '],
@@ -422,12 +400,7 @@
       '1. 선금 20% 입금으로 작업 순서 확정 ＞ 2. 의뢰 내용 확인 ＞ 3. 컬러 러프 확인 ＞ 4. 잔금 80% 입금 ＞ 5. 완성본 납품']
   ];
 
-  /* =====================================================================
-     「有變化的句子」(含數字、名稱)用規則來翻譯。
-     [ 規則, English, 日本語, 한국어 ]
-       %1 %2 = 原樣放回規則裡抓到的第 1、2 段
-       {1} {2} = 把抓到的那段也拿去翻譯再放回來
-     ===================================================================== */
+  /* 變動句子對照 */
   var P = [
     ['^(.+) \\| 潔諾Jessroin$', '{1} | 潔諾Jessroin', '{1} | 潔諾Jessroin', '{1} | 潔諾Jessroin'],
     ['^(.+)的頭像$', '{1}’s avatar', '{1}のアイコン', '{1}의 프로필 이미지'],
@@ -448,16 +421,12 @@
     ['^(.+) - (.+)$', '{1} - {2}', '{1} - {2}', '{1} - {2}']
   ];
 
-  /* =====================================================================
-     以下是程式,不用改
-     ===================================================================== */
   function norm(s) { return String(s).replace(/\s+/g, ' ').trim(); }
 
   var DICT = Object.create(null);
   D.forEach(function (d) { DICT[d[0].split('\n').map(norm).join('\n')] = d; });
   var PAT = P.map(function (p) { return { re: new RegExp(p[0]), row: p }; });
 
-  /* 把一段中文翻成指定語言;找不到就回傳 null */
   function tr(s, l) {
     var core = norm(s), r = DICT[core], i, m, tpl;
     if (r && r[IDX[l]] != null) return r[IDX[l]];
@@ -474,7 +443,6 @@
     return null;
   }
 
-  /* Node.js 測試用(在瀏覽器裡不會執行) */
   if (typeof document === 'undefined') {
     if (typeof module !== 'undefined') module.exports = { DICT: DICT, PAT: PAT, tr: tr, norm: norm };
     return;
@@ -496,7 +464,6 @@
     return { a: m[1], core: m[2], b: m[3] };
   }
 
-  /* 單一文字節點 */
   function doText(node) {
     var p = node.parentNode;
     if (p && p.nodeType === 1) {
@@ -513,7 +480,6 @@
     if (nv !== orig || e) TX.set(node, { orig: orig, applied: nv });
   }
 
-  /* 用 <br> 分行的句子(例如「匯款20%<br>訂金確定排單」)整句一起翻 */
   function doLines(p) {
     var tn = [], c;
     for (c = p.firstChild; c; c = c.nextSibling) {
@@ -535,7 +501,6 @@
     return true;
   }
 
-  /* 屬性(圖片說明、輸入框提示、aria-label…) */
   function doAttr(el, attr) {
     var v = el.getAttribute(attr);
     if (v == null) return;
@@ -572,7 +537,6 @@
     if (md) doAttr(md, 'content');
   }
 
-  /* 頁面之後才長出來的內容(作品集、試算器的提示和收據…)也自動翻譯 */
   function handle(r) {
     var i;
     if (r.type === 'childList') {
@@ -583,12 +547,13 @@
       if (!skip(r.target)) doAttr(r.target, r.attributeName);
     }
   }
+
   function startObs() {
     if (!obs && 'MutationObserver' in window) {
       obs = new MutationObserver(function (recs) {
         if (lang === 'zh') return;
         recs.forEach(handle);
-        obs.takeRecords(); /* 丟掉我們自己改動造成的紀錄 */
+        obs.takeRecords();
       });
     }
     if (obs && document.body) {
@@ -626,7 +591,7 @@
 
   function injectStyle() {
     var css =
-      '.jl{position:relative;display:inline-block;margin-left:10px;flex:none;font-family:inherit}' +
+      '.jl{position:relative;display:inline-block;margin-left:8px;flex:none;font-family:inherit}' +
       '.jl-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:var(--edge,1.5px solid #5A2E3E);border-radius:999px;background:#fff;color:var(--cocoa,#5A2E3E);font:inherit;font-weight:700;font-size:.9rem;line-height:1.4;cursor:pointer;box-shadow:var(--soft,0 3px 0 rgba(90,46,62,.2));white-space:nowrap}' +
       '.jl-btn:hover{background:#FFF1F4}' +
       '.jl-btn svg{width:16px;height:16px;flex:none}' +
@@ -731,7 +696,6 @@
     setLang(pickInitial(), false);
   }
 
-  /* 給其他程式用:JessI18n.t('中文') 會回傳目前語言的翻譯 */
   window.JessI18n = {
     t: function (s) {
       if (lang === 'zh') return s;
