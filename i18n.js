@@ -31,7 +31,7 @@
     ['回覆時間：平日星期一至五 ・ 商業合作：',
       'Reply hours: Mon–Fri ・ Business inquiries: ',
       '返信時間：平日（月〜金） ・ お仕事のご相談：',
-      '답장時間: 평일 월~금 ・ 비즈니스 문의: '],
+      '답장 시간: 평일 월~금 ・ 비즈니스 문의: '],
     ['© 2026 潔諾 Jessroin。作品版權所有，請勿未經同意轉載使用。謝謝你來逛逛 ♡',
       '© 2026 潔諾 Jessroin. All artwork is copyrighted. Please do not repost or use it without permission. Thanks for stopping by ♡',
       '© 2026 潔諾 Jessroin。作品の著作権は作者に帰属します。無断転載・無断使用はご遠慮ください。ご覧いただきありがとうございます ♡',
@@ -248,7 +248,7 @@
     ['上一張', 'Previous', '前へ', '이전'],
     ['下一張', 'Next', '次へ', '다음'],
 
-    /* ---------- 委託計價試算器 ---------- */
+    /* ---------- 委託計價試算器 / 價目表 ---------- */
     ['委託計價試算器', 'Commission Price Calculator', '依頼料金シミュレーター', '커미션 견적 계산기'],
     ['單項委託內容試算', 'Calculate a Single Item', '単品のお見積り', '단일 항목 견적'],
     ['重置當前試算', 'Reset current calculation', '現在の計算をリセット', '현재 견적 초기화'],
@@ -282,7 +282,7 @@
     ['正比半身VTuber', 'Regular-proportion Half-body VTuber', '通常頭身の半身VTuber', '일반 비율 반신 VTuber'],
     ['正比全身VTuber', 'Regular-proportion Full-body VTuber', '通常頭身の全身VTuber', '일반 비율 전신 VTuber'],
     ['Q版全身拆建模型 - 快速加購選項：', 'Chibi full-body model (layer separation & build) – quick add-ons:', 'ちびキャラ全身モデル（パーツ分け・構築）- クイック追加オプション：', '치비 전신 모델(파츠 분리·제작) - 빠른 추가 옵션:'],
-    ['半身拆建模型 - 快速加購選項：', 'Half-body model (layer separation & build) – quick add-ons:', '半身モデル（パーツ分け・構築）- クイック追加オプション：', '반신 모델(파츠 분리·제작) - 빠른 추가 옵션:'],
+    ['半身拆建模型 - 快速加購選項：', 'Half-body model (layer separation & build) – quick add-ons:', '半身モデル（パーツ分け・構築）- クイック追加オプション：', '반신モデル(파츠 분리·제작) - 빠른 추가 옵션:'],
     ['全身拆建模型 - 快速加購選項：', 'Full-body model (layer separation & build) – quick add-ons:', '全身モデル（パーツ分け・構築）- クイック追加オプション：', '전신 모델(파츠 분리·제작) - 빠른 추가 옵션:'],
     ['獸耳尾巴', 'Animal ears & tail', 'けもみみ・しっぽ', '짐승귀·꼬리'],
     ['獸耳', 'Animal ears', 'けもみみ', '짐승귀'],
@@ -656,9 +656,10 @@
     wrap.appendChild(btn);
     wrap.appendChild(menu);
 
-    var nav = document.querySelector('header nav');
-    if (nav && !FLOATING) {
-      nav.appendChild(wrap);
+    /* 將語言按鈕接在 .nav-right (試算按鈕旁)，這樣就會自動靠右貼齊 */
+    var navTarget = document.querySelector('.nav-right') || document.querySelector('header nav');
+    if (navTarget && !FLOATING) {
+      navTarget.appendChild(wrap);
     } else {
       wrap.classList.add('jl-float');
       document.body.appendChild(wrap);
