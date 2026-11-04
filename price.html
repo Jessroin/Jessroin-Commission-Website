@@ -2,6 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <script src="loader.js"></script>
+<script src="i18n.js" defer></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>委託價目表 | 潔諾Jessroin</title>
@@ -103,14 +104,14 @@
 <main>
   <section class="wrap section roomy price-top">
     <div class="price-layout">
-      <div class="tabs" role="tablist"><button type="button" role="tab" data-tab="gummy" aria-selected="false">軟糖</button><button type="button" role="tab" data-tab="doodle" aria-selected="true">塗鴉</button><button type="button" role="tab" data-tab="qq" aria-selected="false">QQ人</button><button type="button" role="tab" data-tab="avatar" aria-selected="false">頭貼</button><button type="button" role="tab" data-tab="half" aria-selected="false">半身</button><button type="button" role="tab" data-tab="full" aria-selected="false">全身／立繪</button><button type="button" role="tab" data-tab="illust" aria-selected="false">插圖</button><button type="button" role="tab" data-tab="sticker" aria-selected="false">貼圖</button><button type="button" role="tab" data-tab="vtuber" aria-selected="false">VTuber皮</button></div>
+      <div class="tabs" role="tablist"><button type="button" role="tab" data-tab="gummy" aria-selected="false">軟糖</button><button type="button" role="tab" data-tab="doodle" aria-selected="true">塗鴉</button><button type="button" role="tab" data-tab="qq" aria-selected="false">QQ人</button><button type="button" role="tab" data-tab="avatar" aria-selected="false">頭貼</button><button type="button" role="tab" data-tab="half" aria-selected="false">半身</button><button type="button" role="tab" data-tab="full" aria-selected="false">全身／立繪</button><button type="button" role="tab" data-tab="illust" aria-selected="false">插圖</button><button type="button" role="tab" data-tab="sticker" aria-selected="false">貼圖</button><button type="button" role="tab" data-tab="vtuber" aria-selected="false">VTuber</button></div>
       <div class="panels">
     <!-- 範例圖會自動從資料夾讀取,不用改這個檔案:
          images/price/gummy/    軟糖
          images/price/doodle/   塗鴉        images/price/qq/       QQ人
          images/price/avatar/   頭貼        images/price/half/     半身
          images/price/full/     全身／立繪   images/price/illust/   插圖
-         images/price/sticker/  貼圖        images/price/vtuber/   VTuber皮
+         images/price/sticker/  貼圖        images/price/vtuber/   VTuber
          每個資料夾裡的圖片命名為 01.jpg、02.jpg、03.jpg…(數字要連續)。
          資料夾是空的時,會顯示粉色的「範例圖」佔位框。 -->
     <div class="panel" id="doodle">
@@ -183,8 +184,8 @@
         <h3>插圖（非商業價格）</h3>
         <p>插圖皆為精緻上色，依插圖複雜程度，價格可能往上調漲</p>
         <ul class="prices">
-          <li><span>半身插圖<small>人物範圍在腰到腿</small></span><span class="price">NT$ 2,500&nbsp;起</span></li>
-          <li><span>全身插圖<small>人物範圍為全身</small></span><span class="price">NT$ 4,000&nbsp;起</span></li>
+          <li><span>半身插圖<small>人物範圍在腰到腿</small></span><span class="price">NT$&nbsp;2,500&nbsp;起</span></li>
+          <li><span>全身插圖<small>人物範圍為全身</small></span><span class="price">NT$&nbsp;4,000&nbsp;起</span></li>
         </ul>
         <p class="meta">工期：一個月</p>
       </div>
@@ -213,9 +214,9 @@
     <div class="panel" id="vtuber" hidden>
       <div class="example"><div class="ph"><span>範例圖</span></div></div>
       <div class="card">
-        <h3>VTuber皮（普通商用價格）</h3>
+        <h3>VTuber（普通商用價格）</h3>
         <div class="item">
-          <div class="item-head"><b>Q版全身V皮</b><span class="big">NT$ 8,000</span></div>
+          <div class="item-head"><b>Q版全身VTuber</b><span class="big">NT$ 8,000</span></div>
           <p>含拆建，基本包含黑臉／害羞表情</p>
           <p class="tier-title addon-title">加購項目</p>
           <ul class="addons">
@@ -226,7 +227,7 @@
           </ul>
         </div>
         <div class="item">
-          <div class="item-head"><b>正比半身V皮</b><span class="big">NT$ 8,000</span></div>
+          <div class="item-head"><b>正比半身VTuber</b><span class="big">NT$ 8,000</span></div>
           <p>含拆建，基本包含黑臉／害羞表情</p>
           <p class="tier-title addon-title">加購項目</p>
           <ul class="addons">
@@ -237,7 +238,7 @@
           </ul>
         </div>
         <div class="item">
-          <div class="item-head"><b>正比全身V皮</b><span class="big">NT$ 15,000</span></div>
+          <div class="item-head"><b>正比全身VTuber</b><span class="big">NT$ 15,000</span></div>
           <p>含拆建，基本包含黑臉／害羞表情</p>
           <p class="tier-title addon-title">加購項目</p>
           <ul class="addons">
@@ -250,7 +251,7 @@
         </div>
         <p class="tier-title sep">建模</p>
         <p>有合作建模師可以做一條龍（依建模需求估價）</p>
-        <p class="meta">V皮工期：1～2個月</p>
+        <p class="meta">VTuber工期：1～2個月</p>
       </div>
     </div>
 
@@ -273,7 +274,6 @@
 
   <section class="wrap section roomy">
     <div class="sec-title">
-      
       <h2>授權用途是什麼意思？</h2>
       <p>角色繪製與插圖的價格是非商業價格，有其他用途時，依用途乘上倍率</p>
     </div>
@@ -305,7 +305,7 @@
       <a href="https://www.youtube.com/channel/UCgwQNXVbiRiOYTJgha7Ojbg" target="_blank" rel="noopener">Youtube</a>
       <a href="https://www.twitch.tv/jessroin" target="_blank" rel="noopener">Twitch</a>
     </div>
-    <p class="foot-info">回覆時間：平日星期一至五　・　商業合作：<a href="mailto:jessroin0709@gmail.com">jessroin0709@gmail.com</a></p>
+    <p class="foot-info">回覆時間：平日星期一至五 ・ 商業合作：<a href="mailto:jessroin0709@gmail.com">jessroin0709@gmail.com</a></p>
     <p class="copy">© 2026&nbsp;潔諾&nbsp;Jessroin。作品版權所有，請勿未經同意轉載使用。謝謝你來逛逛 ♡</p>
   </div>
 </footer>

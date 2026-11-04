@@ -31,7 +31,7 @@
     ['回覆時間：平日星期一至五 ・ 商業合作：',
       'Reply hours: Mon–Fri ・ Business inquiries: ',
       '返信時間：平日（月〜金） ・ お仕事のご相談：',
-      '답장 시간: 평일 월~금 ・ 비즈니스 문의: '],
+      '답장時間: 평일 월~금 ・ 비즈니스 문의: '],
     ['© 2026 潔諾 Jessroin。作品版權所有，請勿未經同意轉載使用。謝謝你來逛逛 ♡',
       '© 2026 潔諾 Jessroin. All artwork is copyrighted. Please do not repost or use it without permission. Thanks for stopping by ♡',
       '© 2026 潔諾 Jessroin。作品の著作権は作者に帰属します。無断転載・無断使用はご遠慮ください。ご覧いただきありがとうございます ♡',
@@ -248,7 +248,122 @@
     ['上一張', 'Previous', '前へ', '이전'],
     ['下一張', 'Next', '次へ', '다음'],
 
-    /* ---------- 委託計價試算器 / 價目表 ---------- */
+    /* ---------- 委託價目表 (price.html) ---------- */
+    ['軟糖', 'Gummy', 'グミ', '젤리'],
+    ['塗鴉', 'Doodle', 'ラクガキ', '낙서'],
+    ['頭貼', 'Avatar', 'アイコン', '프로필 사진'],
+    ['半身', 'Half-body', '半身', '반신'],
+    ['全身／立繪', 'Full Body / Standing Art', '全身／立ち絵', '전신/입상 일러스트'],
+    ['貼圖', 'Stickers', 'スタンプ', '스티커'],
+    ['範例圖', 'Sample Image', 'サンプル画像', '샘플 이미지'],
+    
+    ['塗鴉（非商業價格）', 'Doodle (Non-commercial)', 'ラクガキ（非商用価格）', '낙서 (비상업 가격)'],
+    ['塗鴉驚喜包', 'Doodle Surprise Pack', 'ラクガキサプライズパック', '낙서 서프라이즈 팩'],
+    ['可隨意打賞，內容依打賞價格，可能包含頭貼、半身、全身、QQ人、組合頁',
+      'Tips welcome; contents vary by tip amount and may include avatar, half-body, full-body, chibi, or collage sheet',
+      '金額に応じてアイコン、半身、全身、ちびキャラ、まとめページなどをお描きします',
+      '자유로운 팁 가능, 팁 금액에 따라 프로필 사진, 반신, 전신, 치비, 종합 페이지 등이 포함될 수 있습니다'],
+    ['一律為純底色塗鴉，可指定方向，但不可指定內容',
+      'Flat color doodles only; general direction may be requested, but specific content cannot be requested',
+      'すべてベタ塗りラクガキです。大まかな方向性の指定は可能ですが、詳細なリクエストはできません',
+      '모두 단색 낙서입니다. 대략적인 방향 지정은 가능하나 세부 내용은 지정할 수 없습니다'],
+    ['驚喜包基本為頭貼塗鴉', 'Surprise pack is base-level avatar doodle', 'サプライズパックは基本的にアイコンのラクガキです', '서프라이즈 팩은 기본적으로 프로필 사진 낙서입니다'],
+    ['注意！塗鴉會有溢色、雜線！', 'Note: Doodles may have color overflow and rough lines!', 'ご注意！ラクガキには色ハミ出しやラフ線が含まれます！', '주의! 낙서 특성상 색 번짐이나 잡선이 있을 수 있습니다!'],
+    ['工期：一週', 'Turnaround: 1 week', '納期：1週間', '작업 기간: 1주일'],
+    ['工期：兩週', 'Turnaround: 2 weeks', '納期：2週間', '작업 기간: 2주일'],
+    ['工期：三週', 'Turnaround: 3 weeks', '納期：3週間', '작업 기간: 3주일'],
+    ['工期：一個月', 'Turnaround: 1 month', '納期：1ヶ月', '작업 기간: 1개월'],
+    ['工期：一組一週', 'Turnaround: 1 week per set', '納期：1セット1週間', '작업 기간: 1세트당 1주일'],
+    ['VTuber工期：1～2個月', 'VTuber turnaround: 1–2 months', 'VTuber納期：1〜2ヶ月', 'VTuber 작업 기간: 1~2개월'],
+
+    ['QQ人（非商業價格）', 'Chibi (Non-commercial)', 'ちびキャラ（非商用価格）', '치비 (비상업 가격)'],
+    ['精緻上色', 'Fine Coloring', '本格着色', '정교한 채색'],
+    ['頭貼（非商業價格）', 'Avatar Icon (Non-commercial)', 'アイコン（非商用価格）', '프로필 사진 (비상업 가격)'],
+    ['半身（非商業價格）', 'Half-body (Non-commercial)', '半身（非商用価格）', '반신 (비상업 가격)'],
+    ['全身／立繪（非商業價格）', 'Full Body / Standing Art (Non-commercial)', '全身／立ち絵（非商用価格）', '전신/입상 일러스트 (비상업 가격)'],
+
+    ['插圖（非商業價格）', 'Illustration (Non-commercial)', 'イラスト（非商用価格）', '일러스트 (비상업 가격)'],
+    ['插圖皆為精緻上色，依插圖複雜程度，價格可能往上調漲',
+      'All illustrations include fine coloring; price may increase based on complexity',
+      'イラストはすべて本格着色です。複雑さにより料金が上がる場合があります',
+      '일러스트는 모두 정교한 채색 기준이며, 복잡도에 따라 가격이 인상될 수 있습니다'],
+    ['半身插圖', 'Half-body Illustration', '半身イラスト', '반신 일러스트'],
+    ['人物範圍在腰到腿', 'Framed from waist to legs', '人物の範囲：腰から脚まで', '캐릭터 범위: 허리에서 다리까지'],
+    ['全身插圖', 'Full-body Illustration', '全身イラスト', '전신 일러스트'],
+    ['人物範圍為全身', 'Framed full body', '人物の範囲：全身', '캐릭터 범위: 전신'],
+
+    ['貼圖（普通商用價格）', 'Stickers (Standard Commercial)', 'スタンプ（通常商用価格）', '스티커 (일반 상업 가격)'],
+    ['商用簡單貼圖', 'Commercial Simple Sticker', '商用シンプルスタンプ', '상업용 심플 스티커'],
+    ['一組5張 NT$ 1,700，會依設定複雜程度調漲',
+      'Set of 5: NT$ 1,700; price may increase depending on complexity',
+      '5個セット 1,700台湾ドル、デザインの複雑さにより調整あり',
+      '5장 1세트 1,700 NT$, 설정 복잡도에 따라 인상될 수 있음'],
+    ['商用會員徽章', 'Commercial Member Badge', '商用メンバーバッジ', '상업용 멤버십 배지'],
+    ['YouTube會員徽章：6格', 'YouTube Member Badges: 6 slots', 'YouTubeメンバーバッジ：6枠', 'YouTube 멤버십 배지: 6칸'],
+    ['Twitch訂閱層級徽章：8格', 'Twitch Tier Sub Badges: 8 slots', 'Twitchサブスクバッジ：8枠', 'Twitch 구독 배지: 8칸'],
+
+    ['VTuber（普通商用價格）', 'VTuber (Standard Commercial)', 'VTuber（通常商用価格）', 'VTuber (일반 상업 가격)'],
+    ['Q版全身VTuber', 'Chibi Full-body VTuber', 'ちびキャラ全身VTuber', '치비 전신 VTuber'],
+    ['正比半身VTuber', 'Regular Half-body VTuber', '通常頭身の半身VTuber', '일반 비율 반신 VTuber'],
+    ['正比全身VTuber', 'Regular Full-body VTuber', '通常頭身の全身VTuber', '일반 비율 전신 VTuber'],
+    ['含拆建，基本包含黑臉／害羞表情',
+      'Includes layer separation & build; includes shadow face / blush expressions',
+      'パーツ分け込み、基本表情（青ざめ・照れ）付き',
+      '파츠 분리 포함, 기본 표정(어두운 얼굴/수줍음) 포함'],
+    ['加購項目', 'Add-on Options', '追加オプション', '추가 옵션'],
+    ['獸耳尾巴', 'Animal ears & tail', 'けもみみ・しっぽ', '짐승귀·꼬리'],
+    ['單件服裝／配件穿脫', 'Single outfit/accessory toggle', '衣装・小物1点の着脱', '의상/소품 1개 착탈'],
+    ['另外繪製拆建', 'Requires extra layer separation drawing', '別途パーツ分け描画', '별도 파츠 분리 작업'],
+    ['多一個表情', 'Extra expression', '表情の追加', '표정 1개 추가'],
+    ['依表情複雜程度', 'Depending on expression complexity', '表情の複雑さによる', '표정 복잡도에 따라 조정'],
+    ['依複雜程度調漲', 'Adjusted based on complexity', '複雑さにより調整', '복잡도에 따라 인상'],
+    ['多一套衣服', 'Extra outfit', '衣装の追加', '의상 1벌 추가'],
+    ['按鍵切換', 'Hotkey toggle', 'キー切り替え', '단축키 전환'],
+    ['獸耳', 'Animal ears', 'けもみみ', '짐승귀'],
+    ['底色上色三視圖', 'Base-color three-view sheet', 'ベタ塗り三面図', '밑색 3면도'],
+    ['側面／背面／細節＆裝飾品', 'Side / back / details & accessories', '側面／背面／詳細・小物', '측면 / 후면 / 세부사항 및 장식품'],
+    ['建模', 'Rigging / Modeling', 'モデリング', '모델링'],
+    ['有合作建模師可以做一條龍（依建模需求估價）',
+      'Full-service pipeline available with partner riggers (quoted per rigging request)',
+      '提携モデラーによる一括制作可能（モデリング内容に応じてお見積り）',
+      '협력 모델러를 통한 원스톱 제작 가능 (모델링 요구사항에 따라 견적)'],
+
+    ['軟糖（非商業價格）', 'Gummy (Non-commercial)', 'グミ（非商用価格）', '젤리 (비상업 가격)'],
+    ['一律為純底色塗鴉，完成度如圖',
+      'Flat color doodles only; quality as shown in sample',
+      'すべてベタ塗りラクガキです。完成度はサンプルの通りです',
+      '모두 단색 낙서이며, 완성도는 샘플 이미지와 같습니다'],
+    ['可指定動作，但軟糖比例問題，能做的動作不大',
+      'Poses can be requested, but range of motion is limited due to gummy proportions',
+      'ポーズの指定は可能ですが、グミの等身上、大きなポーズはできません',
+      '포즈 지정은 가능하나 젤리 비율 특성상 큰 동작은 제한될 수 있습니다'],
+
+    ['授權用途是什麼意思？', 'What does License Use mean?', 'ライセンス用途とは？', '라이선스 용도란 무엇인가요?'],
+    ['角色繪製與插圖的價格是非商業價格，有其他用途時，依用途乘上倍率',
+      'Character and illustration prices are non-commercial rates; for other uses, prices are multiplied by the rate tier',
+      'キャラクター制作・イラストの価格は非商用価格です。その他の用途の場合は倍率を掛けて計算します',
+      '캐릭터 및 일러스트 가격은 비상업 기준이며, 기타 용도로 사용 시 용도별 배율이 적용됩니다'],
+    ['價目表基本價', 'Price List Base', '料金表基本額', '가격표 기본가'],
+    ['非商業', 'Non-commercial', '非商用', '비상업'],
+    ['非商×2', 'Non-comm x2', '非商用×2', '비상업×2'],
+    ['發文、分享，以及印製作為免費發放之無料，不用於販售。VTuber、實況者之使用，最低須選擇本等級',
+      'Posting, sharing, and printing as free giveaways (not for sale). VTubers and streamers must select at least this tier',
+      '投稿・共有、および無料配布用ノベルティの印刷（販売不可）。VTuber・配信者の方は最低限この区分を選択してください',
+      '게시, 공유 및 무료 배포용 선물 인쇄 (판매 불가). VTuber 및 스트리머는 최소 이 등급을 선택해야 합니다'],
+    ['非商×3', 'Non-comm x3', '非商用×3', '비상업×3'],
+    ['印製作為周邊販售、製作LINE貼圖等有營利行為之用途',
+      'Profit-making uses such as selling merchandise or creating LINE stickers',
+      'グッズとしての販売、LINEスタンプ制作など営利目的の使用',
+      '굿즈 판매, LINE 스티커 제작 등 영리 목적의 용도'],
+    ['非商×3～×10', 'Non-comm x3~x10', '非商用×3〜×10', '비상업×3~x10'],
+    ['委託人不希望作品被公開展示時選擇，分為非商買斷、商用買斷與全買斷',
+      'For clients who do not want the work displayed publicly; includes Non-commercial, Commercial, and Full Buyouts',
+      '作品の公開を希望されない方向け。非商用買い切り・商用買い切り・完全買い切りがあります',
+      '작품 공개를 원하지 않는 의뢰인용. 비상업 매절, 상업 매절, 전체 매절로 나뉩니다'],
+    ['不確定該選哪一種？請先看', 'Not sure which to choose? Check the ', 'どれを選べばいいか分からない場合は、まず', '어떤 것을 선택해야 할지 모르겠다면 먼저 '],
+    ['的授權方面，或委託前直接詢問', ' Licensing section, or ask me before commissioning', 'のライセンス項目をご確認いただくか、事前にご相談ください', '의 라이선스 부분을 확인하거나 의뢰 전 문의해 주세요'],
+
+    /* ---------- 委託計價試算器 ---------- */
     ['委託計價試算器', 'Commission Price Calculator', '依頼料金シミュレーター', '커미션 견적 계산기'],
     ['單項委託內容試算', 'Calculate a Single Item', '単品のお見積り', '단일 항목 견적'],
     ['重置當前試算', 'Reset current calculation', '現在の計算をリセット', '현재 견적 초기화'],
@@ -256,17 +371,9 @@
     ['例如：Alex', 'e.g. Alex', '例：Alex', '예: Alex'],
     ['日期', 'Date', '日付', '날짜'],
     ['基本項目', 'Basic Items', '基本メニュー', '기본 항목'],
-    ['軟糖', 'Gummy', 'グミ', '젤리'],
     ['驚喜包', 'Surprise Pack', 'サプライズパック', '서프라이즈 팩'],
-    ['塗鴉驚喜包', 'Doodle Surprise Pack', 'ラクガキサプライズパック', '낙서 서프라이즈 팩'],
-    ['塗鴉', 'Doodle', 'ラクガキ', '낙서'],
     ['精緻上色', 'Fine Coloring', '本格着色', '정교한 채색'],
-    ['頭貼', 'Avatar icon', 'アイコン', '프로필 사진'],
-    ['半身', 'Half-body', '半身', '반신'],
-    ['全身/立繪', 'Full body / Standing art', '全身／立ち絵', '전신/입상 일러스트'],
     ['插圖類', 'Illustrations', 'イラスト類', '일러스트류'],
-    ['半身插圖', 'Half-body Illustration', '半身イラスト', '반신 일러스트'],
-    ['全身插圖', 'Full-body Illustration', '全身イラスト', '전신 일러스트'],
     ['貼圖 / 徽章', 'Stickers / Badges', 'スタンプ／バッジ', '스티커 / 배지'],
     ['標價已含普通商用 (x2)', 'Price includes Standard Commercial (x2)', '表示価格は通常商用 (x2) 込み', '표시 가격에 일반 상업 (x2) 포함'],
     ['商用簡單貼圖 (單張)', 'Commercial Simple Sticker (single)', '商用シンプルスタンプ（1個）', '상업용 심플 스티커 (1장)'],
@@ -277,20 +384,11 @@
     ['YT 徽章 (6格)', 'YT Badges (6 slots)', 'YTバッジ（6枠）', 'YT 배지 (6칸)'],
     ['Twitch訂閱徽章 (8格組)', 'Twitch Sub Badge Set (8 slots)', 'Twitchサブスクバッジ（8枠セット）', 'Twitch 구독 배지 (8칸 세트)'],
     ['Twitch 徽章 (8格)', 'Twitch Badges (8 slots)', 'Twitchバッジ（8枠）', 'Twitch 배지 (8칸)'],
-    ['VTuber', 'VTuber', 'VTuber', 'VTuber'],
-    ['Q版全身VTuber', 'Chibi Full-body VTuber', 'ちびキャラ全身VTuber', '치비 전신 VTuber'],
-    ['正比半身VTuber', 'Regular-proportion Half-body VTuber', '通常頭身の半身VTuber', '일반 비율 반신 VTuber'],
-    ['正比全身VTuber', 'Regular-proportion Full-body VTuber', '通常頭身の全身VTuber', '일반 비율 전신 VTuber'],
     ['Q版全身拆建模型 - 快速加購選項：', 'Chibi full-body model (layer separation & build) – quick add-ons:', 'ちびキャラ全身モデル（パーツ分け・構築）- クイック追加オプション：', '치비 전신 모델(파츠 분리·제작) - 빠른 추가 옵션:'],
-    ['半身拆建模型 - 快速加購選項：', 'Half-body model (layer separation & build) – quick add-ons:', '半身モデル（パーツ分け・構築）- クイック追加オプション：', '반신モデル(파츠 분리·제작) - 빠른 추가 옵션:'],
+    ['半身拆建模型 - 快速加購選項：', 'Half-body model (layer separation & build) – quick add-ons:', '半身モデル（パーツ分け・構築）- クイック追加オプション：', '반신 모델(파츠 분리·제작) - 빠른 추가 옵션:'],
     ['全身拆建模型 - 快速加購選項：', 'Full-body model (layer separation & build) – quick add-ons:', '全身モデル（パーツ分け・構築）- クイック追加オプション：', '전신 모델(파츠 분리·제작) - 빠른 추가 옵션:'],
-    ['獸耳尾巴', 'Animal ears & tail', 'けもみみ・しっぽ', '짐승귀·꼬리'],
-    ['獸耳', 'Animal ears', 'けもみみ', '짐승귀'],
     ['表情/個', 'Expression (each)', '表情／個', '표정/개'],
     ['服裝穿脫', 'Outfit toggle', '衣装の着脱', '의상 착탈'],
-    ['多一套衣服', 'Extra outfit', '衣装の追加', '의상 1벌 추가'],
-    ['底色三視圖', 'Base-color three-view sheet', 'ベタ塗り三面図', '밑색 3면도'],
-    ['追加表情', 'Extra expression', '表情の追加', '표정 추가'],
     ['單件服裝/配件穿脫(拆建)', 'Single outfit/accessory toggle (layer build)', '衣装・小物1点の着脱（パーツ分け）', '의상/소품 1개 착탈 (파츠 분리)'],
     ['當前試算項目名稱', 'Item name for this calculation', '今回の計算項目名', '현재 견적 항목명'],
     ['例如：QQ人精緻上色', 'e.g. Chibi fine coloring', '例：ちびキャラ本格着色', '예: 치비 정교한 채색'],
@@ -361,7 +459,7 @@
       '20% deposit to book ➔ Confirm details ➔ Color draft ➔ 80% balance ➔ Final delivery',
       '20%の前金でスケジュール確定 ➔ 内容確認 ➔ カラーラフ ➔ 残り80% ➔ 納品',
       '20% 선금으로 순서 확정 ➔ 내용 확인 ➔ 컬러 러프 ➔ 80% 잔금 ➔ 완성본 납품'],
-    ['（僅供潔諾的委託人使用）', '(For Jessroin’s clients only)', '（潔諾のご依頼者様専用）', '(潔諾 의뢰인 전용)'],
+    ['（僅供潔諾的委託人使用）', '(For Jessroin’s clients only)', '（潔諾のご依頼者 ім専用）', '(潔諾 의뢰인 전용)'],
     ['複製文字結算單', 'Copy text receipt', 'テキストでコピー', '텍스트 견적서 복사'],
     ['下載圖片 (PNG 圖檔)', 'Download image (PNG)', '画像をダウンロード（PNG）', '이미지 다운로드 (PNG)'],
     ['清空結算單所有項目', 'Clear all items', 'すべての項目をクリア', '모든 항목 비우기'],
@@ -375,7 +473,7 @@
     /* 提示訊息 */
     ['已複製文字結算單！', 'Text receipt copied!', 'テキストをコピーしました！', '텍스트 견적서를 복사했어요!'],
     ['已成功下載結算單圖片！', 'Receipt image downloaded!', '画像をダウンロードしました！', '견적서 이미지를 다운로드했어요!'],
-    ['生成圖片失敗，請重試', 'Failed to create the image. Please try again', '画像の作成に失敗しました。もう一度お試しください', '이미지 생성에 실패했어요. 다시 시도해 주세요'],
+    ['生成圖片失敗，請重試', 'Failed to create the image. Please try again', '画像の作成に失敗しました。もう一度お試しのうえ再試行してください', '이미지 생성에 실패했어요. 다시 시도해 주세요'],
     ['結算單目前為空，請先加入項目！', 'The receipt is empty. Please add an item first!', 'お見積書が空です。先に項目を追加してください！', '견적서가 비어 있어요. 먼저 항목을 추가해 주세요!'],
     ['正在生成圖檔，請稍候...', 'Creating the image, please wait...', '画像を作成中です。しばらくお待ちください...', '이미지를 만드는 중입니다. 잠시만 기다려 주세요...'],
     ['已重置當前試算內容', 'Calculation has been reset', '現在の計算をリセットしました', '현재 견적을 초기화했어요'],
@@ -410,6 +508,7 @@
     ['^(.+) 的連結$', 'Link for {1}', '{1}のリンク', '{1} 링크'],
     ['^NT\\$ ([\\d,]+) / 張$', 'NT$ %1 / piece', 'NT$ %1 / 枚', 'NT$ %1 / 장'],
     ['^NT\\$ ([\\d,]+) / 組$', 'NT$ %1 / set', 'NT$ %1 / セット', 'NT$ %1 / 세트'],
+    ['^NT\\$ ([\\d,]+)／張$', 'NT$ %1 / piece', 'NT$ %1／枚', 'NT$ %1／장'],
     ['^已加入 (\\d+) 個項目$', 'Items added: %1', '追加済み：%1件', '추가된 항목: %1개'],
     ['^已載入項目：(.+) \\(\\$([\\d,.]+)\\)$', 'Loaded: {1} ($%2)', '読み込みました：{1}（$%2）', '불러옴: {1} ($%2)'],
     ['^已加購：(.+) \\(\\+\\$([\\d,.]+)\\)$', 'Added: {1} (+$%2)', '追加しました：{1}（+$%2）', '추가함: {1} (+$%2)'],
@@ -591,7 +690,7 @@
 
   function injectStyle() {
     var css =
-      '.jl{position:relative;display:inline-block;margin-left:8px;flex:none;font-family:inherit}' +
+      '.jl{position:relative;display:inline-block;flex:none;font-family:inherit}' +
       '.jl-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:var(--edge,1.5px solid #5A2E3E);border-radius:999px;background:#fff;color:var(--cocoa,#5A2E3E);font:inherit;font-weight:700;font-size:.9rem;line-height:1.4;cursor:pointer;box-shadow:var(--soft,0 3px 0 rgba(90,46,62,.2));white-space:nowrap}' +
       '.jl-btn:hover{background:#FFF1F4}' +
       '.jl-btn svg{width:16px;height:16px;flex:none}' +
@@ -656,10 +755,22 @@
     wrap.appendChild(btn);
     wrap.appendChild(menu);
 
-    /* 將語言按鈕接在 .nav-right (試算按鈕旁)，這樣就會自動靠右貼齊 */
-    var navTarget = document.querySelector('.nav-right') || document.querySelector('header nav');
-    if (navTarget && !FLOATING) {
-      navTarget.appendChild(wrap);
+    var nav = document.querySelector('header nav');
+    if (nav && !FLOATING) {
+      var calcBtn = nav.querySelector('.btn');
+      if (calcBtn) {
+        var actionWrap = document.createElement('div');
+        actionWrap.className = 'nav-actions';
+        actionWrap.style.cssText = 'display:flex; align-items:center; gap:12px; margin-left:auto;';
+        var ul = nav.querySelector('ul');
+        if (ul) ul.style.marginRight = 'auto';
+        calcBtn.parentNode.insertBefore(actionWrap, calcBtn);
+        actionWrap.appendChild(calcBtn);
+        actionWrap.appendChild(wrap);
+      } else {
+        wrap.style.marginLeft = 'auto';
+        nav.appendChild(wrap);
+      }
     } else {
       wrap.classList.add('jl-float');
       document.body.appendChild(wrap);

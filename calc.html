@@ -76,9 +76,7 @@
             <li><a href="works.html">作品集</a></li>
             <li><a href="partners.html">合作夥伴</a></li>
         </ul>
-        <div class="nav-right" style="display: flex; align-items: center; margin-left: auto;">
-          <a class="btn sm" href="calc.html" style="pointer-events:none">委託試算</a>
-        </div>
+        <a class="btn sm" href="calc.html" style="pointer-events:none">委託試算</a>
       </nav>
     </header>
 
@@ -88,6 +86,7 @@
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
+            <!-- 左側：計價輸入表單 (7欄) -->
             <div class="calc-panel lg:col-span-7 bg-white rounded-2xl p-6 shadow-xs border border-slate-200/60 space-y-6">
                 <div class="border-b border-slate-100 pb-4 flex justify-between items-center">
                     <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
@@ -98,6 +97,7 @@
                     </button>
                 </div>
 
+                <!-- 委託人名稱與日期 -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">委託人暱稱 / ID</label>
@@ -109,12 +109,14 @@
                     </div>
                 </div>
 
+                <!-- 價目表快速帶入 -->
                 <div class="space-y-2">
                     <label class="block text-xs font-semibold text-slate-600 flex items-center justify-between">
                         <span><i class="fa-solid fa-palette text-pink-400 me-1"></i>基本項目</span>
                     </label>
                     
                     <div class="space-y-2 text-xs">
+                        <!-- 行0：軟糖 -->
                         <div class="flex items-center gap-2 bg-slate-50/70 p-2 rounded-xl border border-slate-100">
                             <span class="w-20 font-bold text-slate-700 shrink-0">軟糖</span>
                             <div class="grid grid-cols-1 gap-2 flex-1">
@@ -125,6 +127,7 @@
                             </div>
                         </div>
 
+                        <!-- 行1：塗鴉驚喜包 -->
                         <div class="flex items-center gap-2 bg-slate-50/70 p-2 rounded-xl border border-slate-100">
                             <span class="w-20 font-bold text-slate-700 shrink-0">驚喜包</span>
                             <div class="grid grid-cols-1 gap-2 flex-1">
@@ -135,62 +138,67 @@
                             </div>
                         </div>
 
+                        <!-- 行2：QQ人 -->
                         <div class="flex items-center gap-2 bg-slate-50/70 p-2 rounded-xl border border-slate-100">
                             <span class="w-20 font-bold text-slate-700 shrink-0">QQ人</span>
                             <div class="grid grid-cols-2 gap-2 flex-1">
-                                <button onclick="applyPreset('QQ人 (塗鴉)', 350, '1')" class="border border-slate-200/80 bg-white hover:border-pink-300 hover:bg-pink-50/40 px-2.5 py-1.5 rounded-lg text-left transition flex justify-between items-center shadow-2xs">
+                                <button onclick="applyPreset('QQ人 - 塗鴉', 350, '1')" class="border border-slate-200/80 bg-white hover:border-pink-300 hover:bg-pink-50/40 px-2.5 py-1.5 rounded-lg text-left transition flex justify-between items-center shadow-2xs">
                                     <span class="font-medium text-slate-700">塗鴉</span>
                                     <span class="text-pink-600 font-semibold">NT$ 350</span>
                                 </button>
-                                <button onclick="applyPreset('QQ人 (精緻上色)', 600, '1')" class="border border-slate-200/80 bg-white hover:border-pink-300 hover:bg-pink-50/40 px-2.5 py-1.5 rounded-lg text-left transition flex justify-between items-center shadow-2xs">
+                                <button onclick="applyPreset('QQ人 - 精緻上色', 600, '1')" class="border border-slate-200/80 bg-white hover:border-pink-300 hover:bg-pink-50/40 px-2.5 py-1.5 rounded-lg text-left transition flex justify-between items-center shadow-2xs">
                                     <span class="font-medium text-slate-700">精緻上色</span>
                                     <span class="text-pink-600 font-semibold">NT$ 600</span>
                                 </button>
                             </div>
                         </div>
 
+                        <!-- 行3：頭貼 -->
                         <div class="flex items-center gap-2 bg-slate-50/70 p-2 rounded-xl border border-slate-100">
                             <span class="w-20 font-bold text-slate-700 shrink-0">頭貼</span>
                             <div class="grid grid-cols-2 gap-2 flex-1">
-                                <button onclick="applyPreset('頭貼 (塗鴉)', 600, '1')" class="border border-slate-200/80 bg-white hover:border-pink-300 hover:bg-pink-50/40 px-2.5 py-1.5 rounded-lg text-left transition flex justify-between items-center shadow-2xs">
+                                <button onclick="applyPreset('頭貼 - 塗鴉', 600, '1')" class="border border-slate-200/80 bg-white hover:border-pink-300 hover:bg-pink-50/40 px-2.5 py-1.5 rounded-lg text-left transition flex justify-between items-center shadow-2xs">
                                     <span class="font-medium text-slate-700">塗鴉</span>
                                     <span class="text-pink-600 font-semibold">NT$ 600</span>
                                 </button>
-                                <button onclick="applyPreset('頭貼 (精緻上色)', 1000, '1')" class="border border-slate-200/80 bg-white hover:border-pink-300 hover:bg-pink-50/40 px-2.5 py-1.5 rounded-lg text-left transition flex justify-between items-center shadow-2xs">
+                                <button onclick="applyPreset('頭貼 - 精緻上色', 1000, '1')" class="border border-slate-200/80 bg-white hover:border-pink-300 hover:bg-pink-50/40 px-2.5 py-1.5 rounded-lg text-left transition flex justify-between items-center shadow-2xs">
                                     <span class="font-medium text-slate-700">精緻上色</span>
                                     <span class="text-pink-600 font-semibold">NT$ 1,000</span>
                                 </button>
                             </div>
                         </div>
 
+                        <!-- 行4：半身 -->
                         <div class="flex items-center gap-2 bg-slate-50/70 p-2 rounded-xl border border-slate-100">
                             <span class="w-20 font-bold text-slate-700 shrink-0">半身</span>
                             <div class="grid grid-cols-2 gap-2 flex-1">
-                                <button onclick="applyPreset('半身 (塗鴉)', 800, '1')" class="border border-slate-200/80 bg-white hover:border-pink-300 hover:bg-pink-50/40 px-2.5 py-1.5 rounded-lg text-left transition flex justify-between items-center shadow-2xs">
+                                <button onclick="applyPreset('半身 - 塗鴉', 800, '1')" class="border border-slate-200/80 bg-white hover:border-pink-300 hover:bg-pink-50/40 px-2.5 py-1.5 rounded-lg text-left transition flex justify-between items-center shadow-2xs">
                                     <span class="font-medium text-slate-700">塗鴉</span>
                                     <span class="text-pink-600 font-semibold">NT$ 800</span>
                                 </button>
-                                <button onclick="applyPreset('半身 (精緻上色)', 1500, '1')" class="border border-slate-200/80 bg-white hover:border-pink-300 hover:bg-pink-50/40 px-2.5 py-1.5 rounded-lg text-left transition flex justify-between items-center shadow-2xs">
+                                <button onclick="applyPreset('半身 - 精緻上色', 1500, '1')" class="border border-slate-200/80 bg-white hover:border-pink-300 hover:bg-pink-50/40 px-2.5 py-1.5 rounded-lg text-left transition flex justify-between items-center shadow-2xs">
                                     <span class="font-medium text-slate-700">精緻上色</span>
                                     <span class="text-pink-600 font-semibold">NT$ 1,500</span>
                                 </button>
                             </div>
                         </div>
 
+                        <!-- 行5：全身 / 立繪 -->
                         <div class="flex items-center gap-2 bg-slate-50/70 p-2 rounded-xl border border-slate-100">
                             <span class="w-20 font-bold text-slate-700 shrink-0">全身/立繪</span>
                             <div class="grid grid-cols-2 gap-2 flex-1">
-                                <button onclick="applyPreset('全身/立繪 (塗鴉)', 1200, '1')" class="border border-slate-200/80 bg-white hover:border-pink-300 hover:bg-pink-50/40 px-2.5 py-1.5 rounded-lg text-left transition flex justify-between items-center shadow-2xs">
+                                <button onclick="applyPreset('全身/立繪 - 塗鴉', 1200, '1')" class="border border-slate-200/80 bg-white hover:border-pink-300 hover:bg-pink-50/40 px-2.5 py-1.5 rounded-lg text-left transition flex justify-between items-center shadow-2xs">
                                     <span class="font-medium text-slate-700">塗鴉</span>
                                     <span class="text-pink-600 font-semibold">NT$ 1,200</span>
                                 </button>
-                                <button onclick="applyPreset('全身/立繪 (精緻上色)', 2000, '1')" class="border border-slate-200/80 bg-white hover:border-pink-300 hover:bg-pink-50/40 px-2.5 py-1.5 rounded-lg text-left transition flex justify-between items-center shadow-2xs">
+                                <button onclick="applyPreset('全身/立繪 - 精緻上色', 2000, '1')" class="border border-slate-200/80 bg-white hover:border-pink-300 hover:bg-pink-50/40 px-2.5 py-1.5 rounded-lg text-left transition flex justify-between items-center shadow-2xs">
                                     <span class="font-medium text-slate-700">精緻上色</span>
                                     <span class="text-pink-600 font-semibold">NT$ 2,000</span>
                                 </button>
                             </div>
                         </div>
 
+                        <!-- 行6：插圖類 -->
                         <div class="flex items-center gap-2 bg-slate-50/70 p-2 rounded-xl border border-slate-100">
                             <span class="w-20 font-bold text-slate-700 shrink-0">插圖類</span>
                             <div class="grid grid-cols-2 gap-2 flex-1">
@@ -207,6 +215,7 @@
                     </div>
                 </div>
 
+                <!-- 獨立分區：貼圖 (已含商用) -->
                 <div class="bg-sky-50/50 p-3.5 rounded-xl border border-sky-100 space-y-2">
                     <label class="block text-xs font-bold text-sky-900 flex items-center justify-between">
                         <span><i class="fa-solid fa-icons text-sky-500 me-1"></i>貼圖 / 徽章</span>
@@ -228,11 +237,11 @@
                                 <span class="font-medium text-slate-700">會員徽章 (單張)</span>
                                 <span class="text-sky-600 font-bold mt-0.5">NT$ 150</span>
                             </button>
-                            <button onclick="applyPreset('YT 徽章 (6格)', 900, '2', true)" class="border border-sky-200/70 bg-white hover:border-sky-300 p-2 rounded-lg text-left transition flex flex-col justify-between shadow-2xs">
+                            <button onclick="applyPreset('YT會員徽章 (6格組)', 900, '2', true)" class="border border-sky-200/70 bg-white hover:border-sky-300 p-2 rounded-lg text-left transition flex flex-col justify-between shadow-2xs">
                                 <span class="font-medium text-slate-700">YT 徽章 (6格)</span>
                                 <span class="text-sky-600 font-bold mt-0.5">NT$ 900</span>
                             </button>
-                            <button onclick="applyPreset('Twitch 徽章 (8格)', 1200, '2', true)" class="border border-sky-200/70 bg-white hover:border-sky-300 p-2 rounded-lg text-left transition flex flex-col justify-between shadow-2xs">
+                            <button onclick="applyPreset('Twitch訂閱徽章 (8格組)', 1200, '2', true)" class="border border-sky-200/70 bg-white hover:border-sky-300 p-2 rounded-lg text-left transition flex flex-col justify-between shadow-2xs">
                                 <span class="font-medium text-slate-700">Twitch 徽章 (8格)</span>
                                 <span class="text-sky-600 font-bold mt-0.5">NT$ 1,200</span>
                             </button>
@@ -240,6 +249,7 @@
                     </div>
                 </div>
 
+                <!-- 獨立分區：VTuber 專區 -->
                 <div class="bg-purple-50/50 p-3.5 rounded-xl border border-purple-100 space-y-3">
                     <label class="block text-xs font-bold text-purple-900 flex items-center justify-between">
                         <span><i class="fa-solid fa-person-rays text-purple-500 me-1"></i>VTuber</span>
@@ -260,6 +270,7 @@
                         </button>
                     </div>
 
+                    <!-- Live2D Q版全身專屬加購 -->
                     <div id="l2d-addons-chibi" class="hidden bg-white/90 p-3 rounded-lg border border-purple-100 space-y-2">
                         <div class="text-[11px] font-bold text-purple-900 flex items-center gap-1">
                             <i class="fa-solid fa-circle-plus text-purple-400"></i> Q版全身拆建模型 - 快速加購選項：
@@ -280,6 +291,7 @@
                         </div>
                     </div>
 
+                    <!-- Live2D 半身專屬加購 -->
                     <div id="l2d-addons-half" class="hidden bg-white/90 p-3 rounded-lg border border-purple-100 space-y-2">
                         <div class="text-[11px] font-bold text-purple-900 flex items-center gap-1">
                             <i class="fa-solid fa-circle-plus text-purple-400"></i> 半身拆建模型 - 快速加購選項：
@@ -300,6 +312,7 @@
                         </div>
                     </div>
 
+                    <!-- Live2D 全身專屬加購 -->
                     <div id="l2d-addons-full" class="hidden bg-white/90 p-3 rounded-lg border border-purple-100 space-y-2">
                         <div class="text-[11px] font-bold text-purple-900 flex items-center gap-1">
                             <i class="fa-solid fa-circle-plus text-purple-400"></i> 全身拆建模型 - 快速加購選項：
@@ -317,13 +330,14 @@
                             <button onclick="addPresetAddon('多一套衣服', 2500)" class="text-[11px] bg-purple-50 hover:bg-purple-100 text-purple-700 px-2.5 py-1 rounded-md transition font-medium border border-purple-100">
                                 +2500 多一套衣服
                             </button>
-                            <button onclick="addPresetAddon('底色三視圖', 4000)" class="text-[11px] bg-purple-50 hover:bg-purple-100 text-purple-700 px-2.5 py-1 rounded-md transition font-medium border border-purple-100">
+                            <button onclick="addPresetAddon('底色上色三視圖', 4000)" class="text-[11px] bg-purple-50 hover:bg-purple-100 text-purple-700 px-2.5 py-1 rounded-md transition font-medium border border-purple-100">
                                 +4000 底色三視圖
                             </button>
                         </div>
                     </div>
                 </div>
 
+                <!-- 項目名稱與底價自訂 -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">當前試算項目名稱</label>
@@ -341,6 +355,7 @@
                     </div>
                 </div>
 
+                <!-- 使用用途與加急按鈕 -->
                 <div class="grid grid-cols-1 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1.5">
@@ -357,6 +372,7 @@
                         <p class="text-[11px] text-slate-500 font-normal mt-2 leading-relaxed" id="use-case-desc">個人非商業用途</p>
                     </div>
 
+                    <!-- 加急選項按鈕 -->
                     <div>
                         <label id="urgent-toggle-btn" class="sm:w-60 cursor-pointer flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-600 font-semibold text-xs hover:bg-amber-50 hover:border-amber-200 transition select-none h-[38px]">
                             <input type="checkbox" id="urgent-check" onchange="toggleUrgent(); updateLivePreview();" class="hidden">
@@ -366,6 +382,7 @@
                     </div>
                 </div>
 
+                <!-- 加價細項 Add-ons -->
                 <div class="space-y-2.5">
                     <div class="flex justify-between items-center">
                         <label class="text-xs font-semibold text-slate-600 flex items-center gap-1">
@@ -379,6 +396,7 @@
                     </div>
                 </div>
 
+                <!-- 單項小計與確認加入結算單按鈕 -->
                 <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-3 bg-pink-50/40 p-4 rounded-xl border border-pink-100">
                     <div>
                         <div class="text-xs text-slate-500 font-medium">當前試算單項小計：</div>
@@ -391,6 +409,7 @@
 
             </div>
 
+            <!-- 右側：收據樣式預覽與導出 (5欄) -->
             <div class="lg:col-span-5 sticky top-20">
                 <div class="text-xs font-semibold text-slate-400 mb-2 flex justify-between items-center px-1">
                     <span><i class="fa-solid fa-receipt me-1"></i> 收據預覽</span>
@@ -461,6 +480,7 @@
         </div>
     </main>
 
+    <!-- 網購體驗懸浮條 (Sticky Floating Bar for Multi-device/Mobile) -->
     <div id="sticky-cart-bar" class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t-2 border-[#5A2E3E] px-4 py-3 shadow-[0_-4px_16px_rgba(90,46,62,0.15)] flex items-center justify-between gap-3 transition-transform duration-300">
         <div class="flex items-center gap-3 overflow-hidden">
             <div class="w-10 h-10 rounded-full bg-pink-100 border border-[#5A2E3E] flex items-center justify-center shrink-0 text-pink-600 font-bold">
@@ -472,7 +492,7 @@
             </div>
         </div>
         <button onclick="addToReceipt()" class="shrink-0 bg-pink-400 hover:bg-pink-300 text-slate-900 border border-[#5A2E3E] font-bold px-5 py-2.5 rounded-xl shadow-xs flex items-center gap-2 text-xs transition active:scale-95">
-            <i class="fa-solid fa-cart-plus"></i> 加入結算單
+            <i class="fa-solid fa-cart-plus"></i> 加入購物車
         </button>
     </div>
 
@@ -499,11 +519,13 @@
       </div>
     </footer>
 
-    <div id="toast" class="fixed bottom-20 right-5 bg-slate-900/90 text-white text-xs sm:text-sm px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+    <!-- 訊息提示 Toast -->
+    <div id="toast" class="fixed bottom-16 right-5 bg-slate-900/90 text-white text-xs sm:text-sm px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
         <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
         <span id="toast-msg">已複製文字結算單！</span>
     </div>
 
+    <!-- JavaScript 核心邏輯 -->
     <script>
         const T = s => (window.JessI18n ? window.JessI18n.t(s) : s);
         let addons = [];
@@ -963,4 +985,102 @@
 
                 const flowLines = wrap(flowText, 12, 500, IW - PAD * 2);
                 const fh = 16 + 22 + 4 + flowLines.length * 20 + 16;
-                rrect(M, y,
+                rrect(M, y, IW, fh, 12, C.softer, C.line);
+                txt(T('委託流程與規範：'), M + PAD, y + 16 + 11, 12, C.ink, 700);
+                flowLines.forEach((ln, k) => txt(ln, M + PAD, y + 16 + 22 + 4 + 10 + k * 20, 12, C.muted));
+                y += fh + 22;
+                txt(T('（僅供潔諾的委託人使用）'), W / 2, y, 11, C.muted, 500, 'center');
+                y += 28;
+
+                ctx.fillStyle = C.pink;
+                ctx.fillRect(0, y, W, 14);
+                y += 14;
+
+                const out = document.createElement('canvas');
+                out.width = W * S;
+                out.height = Math.ceil(y * S);
+                out.getContext('2d').drawImage(cv, 0, 0);
+
+                const link = document.createElement('a');
+                link.download = `委託結算單_${client === '未填寫' ? '委託人' : client}_${date}.png`;
+                link.href = out.toDataURL('image/png');
+                link.click();
+                showToast('已成功下載結算單圖片！');
+            } catch (err) {
+                console.error(err);
+                showToast('生成圖片失敗，請重試', true);
+            }
+        }
+
+        function copyReceiptText() {
+            if (receiptItems.length === 0) {
+                showToast('結算單目前為空，請先加入項目！', true);
+                return;
+            }
+
+            const totalText = document.getElementById('r-total').innerText;
+            const depositText = document.getElementById('r-deposit').innerText;
+            const finalText = document.getElementById('r-final').innerText;
+
+            let text = `${T('【委託估價明細】')}\n`;
+
+            receiptItems.forEach((item, idx) => {
+                text += `${idx + 1}. ${T(item.title)}\n`;
+                text += `   • ${T('底價：')}NT$ ${item.basePrice.toLocaleString()}\n`;
+                text += `   • ${T('授權：')}${T(item.usageLabel)}\n`;
+                
+                if (item.addons.length > 0) {
+                    item.addons.forEach(a => {
+                        text += `   • ${T(`加價細項 (+${a.name})：`)}NT$ ${a.price.toLocaleString()}\n`;
+                    });
+                }
+                
+                if (item.isUrgent) {
+                    text += `   • ${T('特殊標註：加急處理 (x1.5)')}\n`;
+                }
+                text += `   ${T('小計：')}NT$ ${item.totalPrice.toLocaleString()}\n`;
+            });
+
+            text += `------------------------------\n`;
+            text += `${T('總計金額：')}${totalText}\n`;
+            text += `${T('▶ 首款訂金 (20%)：')}${depositText} ${T('(確認排單)')}\n`;
+            text += `${T('▶ 完稿尾款 (80%)：')}${finalText} ${T('(草稿確認後支付)')}\n`;
+            text += `------------------------------\n`;
+            text += `${T('【委託流程與規範】')}\n`;
+            text += `${T('1. 匯款20%訂金確定排單 ＞ 2. 確認委託內容 ＞ 3. 彩色草稿確認 ＞ 4. 匯款80%尾款 ＞ 5. 完稿交件')}\n`;
+
+            text = text.trimEnd();
+
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+
+            showToast('已複製結算單文字至剪貼簿！');
+        }
+
+        function escapeHtml(str) {
+            return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toast-icon');
+            
+            if (isError) {
+                icon.className = 'fa-solid fa-circle-exclamation text-rose-400';
+            } else {
+                icon.className = 'fa-solid fa-circle-check text-emerald-400';
+            }
+
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
