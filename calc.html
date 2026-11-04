@@ -2,6 +2,7 @@
 <html lang="zh-TW">
 <head>
 <script src="loader.js"></script>
+<script src="i18n.js" defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>委託計價試算器 | 潔諾Jessroin</title>
@@ -526,6 +527,7 @@
 
     <!-- JavaScript 核心邏輯 -->
     <script>
+        const T = s => (window.JessI18n ? window.JessI18n.t(s) : s); // 語言切換:把中文換成目前語言
         let addons = [];
         let receiptItems = []; // 已經確認加入收據的項目列表
         let isCommercialPreset = false;
@@ -849,7 +851,7 @@
             showToast('正在生成圖檔，請稍候...');
 
             try {
-                const FONT = '"Zen Maru Gothic","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';
+                const FONT = '"Zen Maru Gothic","Noto Sans TC","Noto Sans KR","PingFang TC","Microsoft JhengHei","Malgun Gothic","Apple SD Gothic Neo",sans-serif';
                 const W = 480, S = 2, M = 24, IW = W - M * 2, PAD = 16;
                 const C = { ink: '#5A2E3E', muted: '#936070', berry: '#C2456B', price: '#E0507A', deep: '#A5355A',
                             pink: '#FFC2D1', line: '#F0C9D3', softLine: '#FFE0E8', soft: '#FFF1F4', softer: '#FFF7F9', amber: '#8A6300' };
@@ -859,17 +861,19 @@
                 const totalText = document.getElementById('r-total').innerText;
                 const depositText = document.getElementById('r-deposit').innerText;
                 const finalText = document.getElementById('r-final').innerText;
-                const flowText = '20%訂金排單 ➔ 確認內容 ➔ 彩色草稿 ➔ 80%尾款 ➔ 完稿交件';
+                const flowText = T('20%訂金排單 ➔ 確認內容 ➔ 彩色草稿 ➔ 80%尾款 ➔ 完稿交件');
 
                 // 先把畫面上會用到的字載入完成,再開始畫
-                let allText = 'COMMISSION RECEIPT 委託人: 全單總計金額 首款訂金 (20%) 完稿尾款 (80%) 委託流程與規範： （僅供潔諾的委託人使用） 底價 加急處理 NT$ 0123456789,.+-x ' + flowText + date + client;
+                let allText = 'COMMISSION RECEIPT 委託人: 全單總計金額 首款訂金 (20%) 完稿尾款 (80%) 委託流程與規範： （僅供潔諾的委託人使用） 底價 加急處理 NT$ 0123456789,.+-x ' + flowText + date + client + document.body.innerText;
                 receiptItems.forEach(it => {
                     allText += it.title + it.usageLabel;
                     it.addons.forEach(a => { allText += a.name; });
                 });
                 await Promise.all([
                     document.fonts.load('500 14px "Zen Maru Gothic"', allText),
-                    document.fonts.load('700 14px "Zen Maru Gothic"', allText)
+                    document.fonts.load('700 14px "Zen Maru Gothic"', allText),
+                    document.fonts.load('500 14px "Noto Sans KR"', allText),
+                    document.fonts.load('700 14px "Noto Sans KR"', allText)
                 ]);
 
                 const cv = document.createElement('canvas');
@@ -893,11 +897,12 @@
                     setFont(size, weight);
                     const lines = [];
                     let cur = '';
-                    for (const ch of t) {
-                        if (cur && ctx.measureText(cur + ch).width > maxW) { lines.push(cur); cur = ch; }
+                    const tokens = t.match(/[^\s\u2e80-\u9fff\uff00-\uffef]+\s*|[\s\S]/g) || [];
+                    for (const ch of tokens) {
+                        if (cur && ctx.measureText(cur + ch).width > maxW) { lines.push(cur.trimEnd()); cur = ch; }
                         else { cur += ch; }
                     }
-                    if (cur) lines.push(cur);
+                    if (cur) lines.push(cur.trimEnd());
                     return lines;
                 };
                 const rrect = (x, y, w, h, r, fill, stroke) => {
@@ -941,8 +946,8 @@
 
                 // 委託人
                 y += 26;
-                txt('委託人:', M, y, 13, C.muted);
-                txt(client, W - M, y, 13, C.ink, 700, 'right');
+                txt(T('委託人:'), M, y, 13, C.muted);
+                txt(client === '未填寫' ? T(client) : client, W - M, y, 13, C.ink, 700, 'right');
                 y += 20;
                 hline(y, false, C.softLine);
                 y += 18;
@@ -954,7 +959,7 @@
                     const priceW = ctx.measureText(priceStr).width;
                     const titleX = M + PAD + 28;
                     const titleMaxW = (W - M - PAD - priceW - 12) - titleX;
-                    const titleLines = wrap(item.title, 14, 700, titleMaxW);
+                    const titleLines = wrap(T(item.title), 14, 700, titleMaxW);
                     const titleH = titleLines.length * 22;
                     const extraRows = item.addons.length + (item.isUrgent ? 1 : 0);
                     const boxH = 14 + titleH + 6 + 20 + extraRows * 18 + 14;
@@ -974,17 +979,17 @@
                     txt(priceStr, W - M - PAD, firstCy, 15, C.price, 700, 'right');
                     ry += titleH + 6;
                     // 底價與授權
-                    txt(`底價: NT$ ${item.basePrice.toLocaleString()}`, M + PAD, ry + 10, 12, C.muted);
-                    txt(item.usageLabel, W - M - PAD, ry + 10, 12, C.muted, 500, 'right');
+                    txt(T(`底價: NT$ ${item.basePrice.toLocaleString()}`), M + PAD, ry + 10, 12, C.muted);
+                    txt(T(item.usageLabel), W - M - PAD, ry + 10, 12, C.muted, 500, 'right');
                     ry += 20;
                     // 加價細項
                     item.addons.forEach(a => {
-                        txt(`+ ${a.name}`, M + PAD + 8, ry + 9, 11, C.muted);
+                        txt(T(`+ ${a.name}`), M + PAD + 8, ry + 9, 11, C.muted);
                         txt(`NT$ ${a.price.toLocaleString()}`, W - M - PAD, ry + 9, 11, C.muted, 500, 'right');
                         ry += 18;
                     });
                     if (item.isUrgent) {
-                        txt('加急處理', M + PAD + 8, ry + 9, 11, C.amber, 700);
+                        txt(T('加急處理'), M + PAD + 8, ry + 9, 11, C.amber, 700);
                         txt('x1.5', W - M - PAD, ry + 9, 11, C.amber, 700, 'right');
                         ry += 18;
                     }
@@ -994,7 +999,7 @@
                 // 總計
                 hline(y, true, C.line);
                 y += 28;
-                txt('全單總計金額', M, y, 14, C.ink, 700);
+                txt(T('全單總計金額'), M, y, 14, C.ink, 700);
                 txt(totalText, W - M, y, 30, C.price, 700, 'right');
                 y += 28;
 
@@ -1002,9 +1007,9 @@
                 const bw = (IW - 10) / 2, bh = 68;
                 rrect(M, y, bw, bh, 12, C.soft, C.softLine);
                 rrect(M + bw + 10, y, bw, bh, 12, C.softer, C.line);
-                txt('首款訂金 (20%)', M + PAD, y + 22, 12, C.berry);
+                txt(T('首款訂金 (20%)'), M + PAD, y + 22, 12, C.berry);
                 txt(depositText, M + PAD, y + 46, 17, C.deep, 700);
-                txt('完稿尾款 (80%)', M + bw + 10 + PAD, y + 22, 12, C.muted);
+                txt(T('完稿尾款 (80%)'), M + bw + 10 + PAD, y + 22, 12, C.muted);
                 txt(finalText, M + bw + 10 + PAD, y + 46, 17, C.ink, 700);
                 y += bh + 16;
 
@@ -1012,10 +1017,10 @@
                 const flowLines = wrap(flowText, 12, 500, IW - PAD * 2);
                 const fh = 16 + 22 + 4 + flowLines.length * 20 + 16;
                 rrect(M, y, IW, fh, 12, C.softer, C.line);
-                txt('委託流程與規範：', M + PAD, y + 16 + 11, 12, C.ink, 700);
+                txt(T('委託流程與規範：'), M + PAD, y + 16 + 11, 12, C.ink, 700);
                 flowLines.forEach((ln, k) => txt(ln, M + PAD, y + 16 + 22 + 4 + 10 + k * 20, 12, C.muted));
                 y += fh + 22;
-                txt('（僅供潔諾的委託人使用）', W / 2, y, 11, C.muted, 500, 'center');
+                txt(T('（僅供潔諾的委託人使用）'), W / 2, y, 11, C.muted, 500, 'center');
                 y += 28;
 
                 // 下方粉色條
@@ -1052,32 +1057,32 @@
             const finalText = document.getElementById('r-final').innerText;
             const discount = 0;
 
-            let text = `【委託估價明細】\n`;
+            let text = `${T('【委託估價明細】')}\n`;
 
             receiptItems.forEach((item, idx) => {
-                text += `${idx + 1}. ${item.title}\n`;
-                text += `   • 底價：NT$ ${item.basePrice.toLocaleString()}\n`;
-                text += `   • 授權：${item.usageLabel}\n`;
+                text += `${idx + 1}. ${T(item.title)}\n`;
+                text += `   • ${T('底價：')}NT$ ${item.basePrice.toLocaleString()}\n`;
+                text += `   • ${T('授權：')}${T(item.usageLabel)}\n`;
                 
                 if (item.addons.length > 0) {
                     item.addons.forEach(a => {
-                        text += `   • 加價細項 (+${a.name})：NT$ ${a.price.toLocaleString()}\n`;
+                        text += `   • ${T(`加價細項 (+${a.name})：`)}NT$ ${a.price.toLocaleString()}\n`;
                     });
                 }
                 
                 if (item.isUrgent) {
-                    text += `   • 特殊標註：加急處理 (x1.5)\n`;
+                    text += `   • ${T('特殊標註：加急處理 (x1.5)')}\n`;
                 }
-                text += `   小計：NT$ ${item.totalPrice.toLocaleString()}\n`;
+                text += `   ${T('小計：')}NT$ ${item.totalPrice.toLocaleString()}\n`;
             });
 
             text += `------------------------------\n`;
-            text += `總計金額：${totalText}\n`;
-            text += `▶ 首款訂金 (20%)：${depositText} (確認排單)\n`;
-            text += `▶ 完稿尾款 (80%)：${finalText} (草稿確認後支付)\n`;
+            text += `${T('總計金額：')}${totalText}\n`;
+            text += `${T('▶ 首款訂金 (20%)：')}${depositText} ${T('(確認排單)')}\n`;
+            text += `${T('▶ 完稿尾款 (80%)：')}${finalText} ${T('(草稿確認後支付)')}\n`;
             text += `------------------------------\n`;
-            text += `【委託流程與規範】\n`;
-            text += `1. 匯款20%訂金確定排單 ＞ 2. 確認委託內容 ＞ 3. 彩色草稿確認 ＞ 4. 匯款80%尾款 ＞ 5. 完稿交件\n`;
+            text += `${T('【委託流程與規範】')}\n`;
+            text += `${T('1. 匯款20%訂金確定排單 ＞ 2. 確認委託內容 ＞ 3. 彩色草稿確認 ＞ 4. 匯款80%尾款 ＞ 5. 完稿交件')}\n`;
 
             text = text.trimEnd();
 
