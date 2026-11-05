@@ -769,8 +769,8 @@
   function injectStyle() {
     var css =
       '.jl{position:relative;display:inline-block;flex:none;font-family:inherit}' +
-      '.jl-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:var(--edge,1.5px solid #5A2E3E);border-radius:999px;background:#fff;color:var(--cocoa,#5A2E3E);font:inherit;font-weight:700;font-size:.9rem;line-height:1.4;cursor:pointer;box-shadow:var(--soft,0 3px 0 rgba(90,46,62,.2));white-space:nowrap}' +
-      '.jl-btn:hover{background:#FFF1F4}' +
+      '.jl-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:var(--edge,1.5px solid #5A2E3E);border-radius:999px;background:#fff;color:var(--cocoa,#5A2E3E);font:inherit;font-weight:700;font-size:.9rem;line-height:1.4;cursor:pointer;box-shadow:0 3px 0 var(--berry,#C2456B);transition:transform .12s,box-shadow .12s,background .12s;white-space:nowrap}' +
+      '.jl-btn:hover,.jl-btn:focus-visible{background:#FFF1F4;transform:translateY(2px);box-shadow:0 1px 0 var(--berry,#C2456B)}' +
       '.jl-btn svg{width:16px;height:16px;flex:none}' +
       '.jl-menu{position:absolute;left:50%;transform:translateX(-50%);top:calc(100% + 8px);z-index:300;min-width:140px;margin:0;padding:6px;list-style:none;background:#fff;border:var(--edge,1.5px solid #5A2E3E);border-radius:16px;box-shadow:var(--soft,0 3px 0 rgba(90,46,62,.2))}' +
       '.jl-menu[hidden]{display:none}' +
