@@ -17,6 +17,35 @@
   ];
   var IDX = { en: 1, ja: 2, ko: 3 };
 
+  /* ===== 幣值換算(只在 <body data-convert-currency> 的頁面:價目表、委託須知) =====
+     價格一律以新台幣 NT$ 為準,切到其他語言時改顯示概算外幣。
+     RATES 是備用匯率(1 NT$ 約等於多少外幣,依 2026 年 10 月的行情估算);
+     頁面會嘗試抓即時匯率(每 12 小時一次),抓不到就用這組。想手動調整就改這三個數字 */
+  var RATES = { en: 0.0307, ja: 4.85, ko: 44 };
+  var FX_URL = 'https://open.er-api.com/v6/latest/TWD';
+  var FX_KEY = 'jess-fx', FX_TTL = 12 * 3600 * 1000;
+  var CONVERT = false;
+
+  function nnum(s) { return parseFloat(String(s).replace(/,/g, '')); }
+  function group(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  var FMT = {
+    en: function (n) { var v = n * RATES.en; return 'US$' + (v >= 100 ? group(Math.round(v)) : v.toFixed(2)); },
+    ja: function (n) { var v = n * RATES.ja; return group(v >= 100 ? Math.round(v / 10) * 10 : Math.round(v)) + '円'; },
+    ko: function (n) { var v = n * RATES.ko; return group(v >= 1000 ? Math.round(v / 100) * 100 : Math.round(v / 10) * 10) + '원'; }
+  };
+  var NOTE = {
+    en: function () { return 'Prices are set in NT$. Amounts shown here are rough conversions (1 NT$ ≈ US$' + RATES.en.toFixed(4) + '); the NT$ price is what applies.'; },
+    ja: function () { return '価格は台湾ドル（NT$）で設定しています。表示金額は目安の換算額（1 NT$ ≒ ' + RATES.ja.toFixed(2) + '円）で、実際のお支払いはNT$の金額が基準です。'; },
+    ko: function () { return '가격은 대만 달러(NT$) 기준입니다. 표시된 금액은 대략적인 환산액(1 NT$ ≈ ' + RATES.ko.toFixed(1) + '원)이며, 실제 결제는 NT$ 금액을 따릅니다.'; }
+  };
+  /* 把文字裡的 NT$ 金額換成當地幣值;價目表的加購價「+300」「+100～300」也一起換 */
+  function money(s, l) {
+    var f = FMT[l];
+    if (!f) return s;
+    return s.replace(/NT\$\s?(\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?/g, function (_, n) { return f(nnum(n)); })
+            .replace(/^\+(\d[\d,]*)(?:([～~])(\d[\d,]*))?$/, function (_, a, sep, b) { return '+' + f(nnum(a)) + (b ? sep + f(nnum(b)) : ''); });
+  }
+
   /* 翻譯表: [ 中文, English, 日本語, 한국어 ] */
   var D = [
     /* ---------- 共用:選單、頁尾 ---------- */
@@ -109,9 +138,9 @@
 
     ['授權方面', 'Licensing', 'ライセンスについて', '라이선스'],
     ['價格以價目表所列之非商業委託價格為基準，依所選授權等級乘以對應倍率計算。例如價目表價格為1000元，選擇「普通商用」，費用為1000×2＝2000元。',
-      'Prices are based on the non-commercial prices listed in the price list, multiplied by the rate for the license tier you choose. For example, if the listed price is NT$1000 and you choose “Standard Commercial”, the fee is 1000×2 = NT$2000.',
-      '料金は、料金表に記載の非商用価格を基準に、選択したライセンス区分の倍率を掛けて計算します。例：料金表の価格が1000元で「通常商用」を選んだ場合、料金は1000×2＝2000元です。',
-      '가격은 가격표에 기재된 비상업 커미션 가격을 기준으로, 선택한 라이선스 등급의 배율을 곱해 계산합니다. 예를 들어 가격표 가격이 1000 NT$이고 “일반 상업”을 선택하면 1000×2＝2000 NT$입니다.'],
+      'Prices are based on the non-commercial prices listed in the price list, multiplied by the rate for the license tier you choose. For example, if the listed price is 1000 and you choose “Standard Commercial”, the fee is 1000×2 = 2000.',
+      '料金は、料金表に記載の非商用価格を基準に、選択したライセンス区分の倍率を掛けて計算します。例：料金表の価格が1000で「通常商用」を選んだ場合、料金は1000×2＝2000です。',
+      '가격은 가격표에 기재된 비상업 커미션 가격을 기준으로, 선택한 라이선스 등급의 배율을 곱해 계산합니다. 예를 들어 가격표 가격이 1000이고 “일반 상업”을 선택하면 1000×2＝2000입니다.'],
     ['授權及讓與之範圍，以所選授權等級及雙方約定為準；約定不明確之部分，視為未授權、未讓與。',
       'The scope of any license or assignment is determined by the license tier you choose and our agreement; anything not clearly agreed is treated as not licensed and not assigned.',
       'ライセンス及び譲渡の範囲は、選択したライセンス区分および双方の取り決めによります。取り決めが不明確な部分は、未許諾・未譲渡とみなします。',
@@ -223,7 +252,7 @@
     ['付款方式', 'Payment Methods', 'お支払い方法', '결제 방법'],
     ['匯款轉帳 / 無摺', 'Bank transfer / passbook-free deposit', '銀行振込／通帳なし入金', '계좌이체 / 무통장 입금'],
     ['PayPal（+5%手續費）', 'PayPal (+5% fee)', 'PayPal（手数料+5%）', 'PayPal (수수료 +5%)'],
-    ['超商代碼\n（+32元NTD手續費）', 'Convenience store payment code\n(+NT$32 fee)', 'コンビニ支払いコード\n（手数料+32台湾ドル）', '편의점 결제 코드\n(수수료 +32 NT$)'],
+    ['超商代碼\n（+32元手續費）', 'Convenience store payment code\n(+NT$32 fee)', 'コンビニ支払いコード\n（手数料+NT$32）', '편의점 결제 코드\n(수수료 +NT$32)'],
 
     /* ---------- 合作夥伴 ---------- */
     ['承接項目：coverPV／待機畫面／OP／ED／轉場畫面／手書',
@@ -296,8 +325,8 @@
     ['商用簡單貼圖', 'Commercial Simple Sticker', '商用シンプルスタンプ', '상업용 심플 스티커'],
     ['一組5張 NT$ 1,700，會依設定複雜程度調漲',
       'Set of 5: NT$ 1,700; price may increase depending on complexity',
-      '5個セット 1,700台湾ドル、デザインの複雑さにより調整あり',
-      '5장 1세트 1,700 NT$, 설정 복잡도에 따라 인상될 수 있음'],
+      '5個セット NT$ 1,700、デザインの複雑さにより調整あり',
+      '5장 1세트 NT$ 1,700, 설정 복잡도에 따라 인상될 수 있음'],
     ['商用會員徽章', 'Commercial Member Badge', '商用メンバーバッジ', '상업용 멤버십 배지'],
     ['YouTube會員徽章：6格', 'YouTube Member Badges: 6 slots', 'YouTubeメンバーバッジ：6枠', 'YouTube 멤버십 배지: 6칸'],
     ['Twitch訂閱層級徽章：8格', 'Twitch Tier Sub Badges: 8 slots', 'Twitchサブスクバッジ：8枠', 'Twitch 구독 배지: 8칸'],
@@ -503,7 +532,7 @@
       'Personal collection, non-profit doujin works, resizing and cropping allowed, may be posted with credit',
       '個人での鑑賞・保管、同人・非営利作品での使用、拡大縮小・トリミング可、出典を明記した上での公開可',
       '개인 소장, 비영리 동인 작품에서의 사용, 확대·축소 및 자르기 가능, 출처 표기 후 게시 가능'],
-    ['全身/立繪', 'Full Body / Standing Art', '全身／立ち絵', '전신/입상 일러스트'],
+    ['全身/立繪', 'Full Body', '全身', '전신'],
     ['已複製結算單文字至剪貼簿！', 'Text receipt copied to clipboard!', 'テキストをクリップボードにコピーしました！', '견적서 텍스트를 클립보드에 복사했어요!'],
     ['加入購物車', 'Add to Cart', 'カートに追加', '장바구니에 담기']
   ];
@@ -523,6 +552,7 @@
     ['^已載入項目：(.+) \\(\\$([\\d,.]+)\\)$', 'Loaded: {1} ($%2)', '読み込みました：{1}（$%2）', '불러옴: {1} ($%2)'],
     ['^已加購：(.+) \\(\\+\\$([\\d,.]+)\\)$', 'Added: {1} (+$%2)', '追加しました：{1}（+$%2）', '추가함: {1} (+$%2)'],
     ['^已加入結算單：(.+)$', 'Added to receipt: {1}', 'お見積書に追加しました：{1}', '견적서에 추가함: {1}'],
+    ['^NT\\$ ([\\d,]+) 起$', 'From NT$ %1', 'NT$ %1〜', 'NT$ %1부터'],
     ['^已選項目：(.+)$', 'Selected: {1}', '選択中：{1}', '선택한 항목: {1}'],
     ['^底價: (.+)$', 'Base price: %1', '基本料金: %1', '기본 가격: %1'],
     ['^加價細項 \\(\\+(.+)\\)：$', 'Add-on (+{1}): ', '追加項目（+{1}）：', '추가 항목 (+{1}): '],
@@ -559,7 +589,7 @@
   }
 
   var lang = DEFAULT_LANG, origHtmlLang = '';
-  var TX = new WeakMap(), AT = new WeakMap(), obs = null, koFont = false;
+  var TX = new WeakMap(), AT = new WeakMap(), obs = null, koFont = false, touched = false;
   var ATTRS = ['alt', 'title', 'placeholder', 'aria-label'];
   var LANG_BY = {};
   LANGS.forEach(function (x) { LANG_BY[x.code] = x; });
@@ -585,7 +615,8 @@
     var w = splitWs(orig);
     if (!w.core) return;
     var out = lang === 'zh' ? null : tr(w.core, lang);
-    var nv = out == null ? orig : w.a + out + w.b;
+    if (CONVERT && lang !== 'zh') out = money(out == null ? w.core : out, lang);
+    var nv = (out == null || out === w.core) ? orig : w.a + out + w.b;
     if (nv !== v) node.nodeValue = nv;
     if (nv !== orig || e) TX.set(node, { orig: orig, applied: nv });
   }
@@ -603,6 +634,7 @@
     if (out == null) return false;
     var parts = out.split('\n');
     if (parts.length !== tn.length) return false;
+    if (CONVERT) parts = parts.map(function (p) { return money(p, lang); });
     tn.forEach(function (n, i) {
       var w = splitWs(origs[i]), nv = w.a + parts[i] + w.b;
       if (n.nodeValue !== nv) n.nodeValue = nv;
@@ -690,10 +722,45 @@
     document.documentElement.lang = l === 'zh' ? (origHtmlLang || 'zh-Hant') : LANG_BY[l].html;
     if (l === 'ko') loadKoFont();
     if (obs) obs.disconnect();
-    applyAll();
-    startObs();
+    /* 預設中文且從沒翻譯過:不用掃描整個網頁,也不用開監聽器(省下載入時的運算) */
+    if (l !== 'zh' || touched) applyAll();
+    if (l !== 'zh') { touched = true; startObs(); }
+    updateNote();
     updateUI();
     try { document.dispatchEvent(new CustomEvent('jess-lang-change', { detail: { lang: l } })); } catch (e) {}
+  }
+
+  function updateNote() {
+    var el = document.getElementById('jess-cur-note');
+    if (!CONVERT || lang === 'zh') { if (el) el.remove(); return; }
+    if (!el) {
+      el = document.createElement('p');
+      el.id = 'jess-cur-note';
+      el.setAttribute('data-no-i18n', '');
+      el.style.cssText = 'margin:28px auto 0;max-width:720px;padding:0 20px;text-align:center;font-size:.85rem;line-height:1.7;opacity:.75';
+      (document.querySelector('main') || document.body).appendChild(el);
+    }
+    el.textContent = NOTE[lang]();
+  }
+
+  function applyFx(o) {
+    if (!o || !(o.en > 0.02 && o.en < 0.05 && o.ja > 3 && o.ja < 8 && o.ko > 30 && o.ko < 70)) return;
+    RATES = o;
+    if (lang !== 'zh') setLang(lang, false);
+  }
+  function loadFx() {
+    if (!CONVERT) return;
+    var c = null;
+    try { c = JSON.parse(localStorage.getItem(FX_KEY) || 'null'); } catch (e) {}
+    if (c && c.r && Date.now() - c.t < FX_TTL) { applyFx(c.r); return; }
+    if (!window.fetch) return;
+    fetch(FX_URL).then(function (r) { return r.json(); }).then(function (d) {
+      var r = d && d.rates;
+      if (!r) return;
+      var o = { en: r.USD, ja: r.JPY, ko: r.KRW };
+      try { localStorage.setItem(FX_KEY, JSON.stringify({ t: Date.now(), r: o })); } catch (e) {}
+      applyFx(o);
+    }).catch(function () {});
   }
 
   /* ========== 語言按鈕 ========== */
@@ -705,22 +772,26 @@
       '.jl-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:var(--edge,1.5px solid #5A2E3E);border-radius:999px;background:#fff;color:var(--cocoa,#5A2E3E);font:inherit;font-weight:700;font-size:.9rem;line-height:1.4;cursor:pointer;box-shadow:var(--soft,0 3px 0 rgba(90,46,62,.2));white-space:nowrap}' +
       '.jl-btn:hover{background:#FFF1F4}' +
       '.jl-btn svg{width:16px;height:16px;flex:none}' +
-      '.jl-menu{position:absolute;right:0;top:calc(100% + 8px);z-index:300;min-width:140px;margin:0;padding:6px;list-style:none;background:#fff;border:var(--edge,1.5px solid #5A2E3E);border-radius:16px;box-shadow:var(--soft,0 3px 0 rgba(90,46,62,.2))}' +
+      '.jl-menu{position:absolute;left:50%;transform:translateX(-50%);top:calc(100% + 8px);z-index:300;min-width:140px;margin:0;padding:6px;list-style:none;background:#fff;border:var(--edge,1.5px solid #5A2E3E);border-radius:16px;box-shadow:var(--soft,0 3px 0 rgba(90,46,62,.2))}' +
       '.jl-menu[hidden]{display:none}' +
       '.jl-menu li{margin:0;padding:0;list-style:none}' +
-      '.jl-menu button{display:block;width:100%;padding:8px 12px;border:0;border-radius:10px;background:none;color:var(--cocoa,#5A2E3E);font:inherit;text-align:left;cursor:pointer}' +
+      '.jl-menu button{display:block;width:100%;padding:8px 12px;border:0;border-radius:10px;background:none;color:var(--cocoa,#5A2E3E);font:inherit;text-align:center;cursor:pointer}' +
       '.jl-menu button:hover{background:#FFF1F4}' +
       '.jl-menu button[aria-current="true"]{background:#FFE0E8;font-weight:700}' +
-      /* 導覽列:左 logo、中間選單置中、右邊試算+語言按鈕(螢幕夠寬時左右等寬,選單才會真正置中) */
-      '.nav-actions{display:flex;align-items:center;gap:12px;margin-left:auto}' +
-      'header nav>ul{margin-right:auto}' +
+      /* 導覽列:style.css 已有手機版排序(logo→委託試算→選單另起一行),這裡只要讓新的按鈕容器照同樣的位置排 */
+      '.nav-actions{display:flex;align-items:center;gap:12px}' +
+      '@media(max-width:600px){' +
+        'header nav>.nav-actions{order:2;gap:8px}' +
+        '.jl-btn{padding:0 10px;font-size:.85rem;line-height:2}' +
+      '}' +
+      /* 電腦版:左 logo、選單置中、右邊語言+委託試算(左右兩邊等寬,選單才會真的在正中間) */
       '@media(min-width:821px){' +
         'header nav>.logo{flex:1 1 0;white-space:nowrap}' +
         'header nav>ul{flex:0 0 auto;margin:0 auto;justify-content:center}' +
-        'header nav>.nav-actions{flex:1 1 0;justify-content:flex-end;margin-left:0}' +
+        'header nav>.nav-actions{flex:1 1 0;justify-content:flex-end}' +
       '}' +
       '.jl.jl-float{position:fixed;left:16px;bottom:16px;z-index:300;margin:0}' +
-      '.jl.jl-float .jl-menu{right:auto;left:0;top:auto;bottom:calc(100% + 8px)}' +
+      '.jl.jl-float .jl-menu{right:auto;left:0;transform:none;top:auto;bottom:calc(100% + 8px)}' +
       'html[lang="ko"] :where(body,button,input,select,textarea){font-family:"Zen Maru Gothic","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif}';
     var st = document.createElement('style');
     st.textContent = css;
@@ -756,11 +827,22 @@
     });
 
     function close() { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
+    /* 子選單固定在按鈕正下方置中;太靠近螢幕邊緣時只往內微調,不會被切掉 */
+    function place() {
+      if (wrap.classList.contains('jl-float')) return;
+      menu.style.transform = 'translateX(-50%)';
+      var r = menu.getBoundingClientRect(), vw = document.documentElement.clientWidth, dx = 0;
+      if (r.left < 8) dx = 8 - r.left;
+      else if (r.right > vw - 8) dx = vw - 8 - r.right;
+      if (dx) menu.style.transform = 'translateX(calc(-50% + ' + dx + 'px))';
+    }
     btn.addEventListener('click', function (e) {
       e.stopPropagation();
       menu.hidden = !menu.hidden;
       btn.setAttribute('aria-expanded', String(!menu.hidden));
+      if (!menu.hidden) place();
     });
+    window.addEventListener('resize', close);
     menu.addEventListener('click', function (e) {
       var b = e.target.closest && e.target.closest('button[data-l]');
       if (!b) return;
@@ -820,8 +902,10 @@
 
   function init() {
     origHtmlLang = document.documentElement.lang || 'zh-Hant';
+    CONVERT = !!(document.body && document.body.hasAttribute('data-convert-currency'));
     buildUI();
     setLang(pickInitial(), false);
+    loadFx();
   }
 
   window.JessI18n = {
