@@ -1,3 +1,4 @@
+/* i18n.js 版本:2026-11-05-c(用來確認網站上跑的是不是最新檔案) */
 /* =====================================================================
    i18n.js  —  潔諾Jessroin 網站的語言切換(中文 / English / 日本語 / 한국어)
    ===================================================================== */
@@ -16,6 +17,7 @@
     { code: 'ko', label: '한국어',  html: 'ko' }
   ];
   var IDX = { en: 1, ja: 2, ko: 3 };
+  if (typeof window !== 'undefined') window.JessI18nVersion = '2026-11-05-c';
 
   /* ===== 幣值換算(只在 <body data-convert-currency> 的頁面:價目表、委託須知) =====
      價格一律以新台幣 NT$ 為準,切到其他語言時改顯示概算外幣。
@@ -784,12 +786,15 @@
         'header nav>.nav-actions{order:2;gap:8px}' +
         '.jl-btn{padding:0 10px;font-size:.85rem;line-height:2}' +
       '}' +
-      /* 電腦版:左 logo、選單置中、右邊語言+委託試算(左右兩邊等寬,選單才會真的在正中間) */
+      /* 電腦版:logo 左邊、選單緊接著靠左、語言+委託試算在最右邊 */
       '@media(min-width:821px){' +
-        'header nav>.logo{flex:1 1 0;white-space:nowrap}' +
-        'header nav>ul{flex:0 0 auto;margin:0 auto;justify-content:center}' +
-        'header nav>.nav-actions{flex:1 1 0;justify-content:flex-end}' +
+        'header nav>ul{justify-content:flex-start;margin:0 auto 0 18px}' +
       '}' +
+      /* 價目表頁左側分類條:寬度依文字撐開,每個選項一行 */
+      '.price-top .price-layout{grid-template-columns:max-content minmax(0,1fr)}' +
+      '@media(min-width:601px){.price-top .tabs button{white-space:nowrap}}' +
+      '@media(min-width:821px){.price-top .price-layout .tabs button{padding:8px 18px}}' +
+      '@media(max-width:820px){.price-top .price-layout{grid-template-columns:1fr}}' +
       '.jl.jl-float{position:fixed;left:16px;bottom:16px;z-index:300;margin:0}' +
       '.jl.jl-float .jl-menu{right:auto;left:0;transform:none;top:auto;bottom:calc(100% + 8px)}' +
       'html[lang="ko"] :where(body,button,input,select,textarea){font-family:"Zen Maru Gothic","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif}';
@@ -902,7 +907,7 @@
 
   function init() {
     origHtmlLang = document.documentElement.lang || 'zh-Hant';
-    CONVERT = !!(document.body && document.body.hasAttribute('data-convert-currency'));
+    CONVERT = !!(document.body && document.body.hasAttribute('data-convert-currency')) || /\/(price|notice)(\.html)?\/?$/.test(location.pathname);
     buildUI();
     setLang(pickInitial(), false);
     loadFx();
