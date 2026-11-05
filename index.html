@@ -10,6 +10,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+/* 自我介紹:兩句各一行,不換行(字太長時由下方的小程式自動縮小字級) */
+.hero-text{min-width:0}
+.hero-text h1,.hero-text .lead{white-space:nowrap}
+</style>
 </head>
 <body>
 
@@ -68,6 +73,37 @@
 </footer>
 
 <script src="gallery.js"></script>
+<script>
+/* 讓「哈囉～這裡是潔諾！」和「目前有8年接案經歷…」各佔一行:放不下時自動縮小字級;
+   縮到 12px 還是放不下(例如手機上的英文版),才允許換行 */
+(function(){
+  var MIN_PX=12;
+  function fit(){
+    var box=document.querySelector('.hero-text'),wrap=document.querySelector('.hero2');
+    if(!box||!wrap)return;
+    var wcs=getComputedStyle(wrap);
+    var avail=wrap.getBoundingClientRect().right-parseFloat(wcs.paddingRight||0)-box.getBoundingClientRect().left;
+    if(avail<=0)return;
+    [].forEach.call(box.querySelectorAll('h1,.lead'),function(e){
+      e.style.fontSize='';e.style.whiteSpace='';
+      var fs=parseFloat(getComputedStyle(e).fontSize);
+      var disp=e.style.display;e.style.display='inline-block';
+      var nat=e.getBoundingClientRect().width;
+      e.style.display=disp;
+      if(nat<=avail)return;
+      var next=fs*avail/nat*0.98;
+      if(next<MIN_PX){e.style.fontSize=MIN_PX+'px';e.style.whiteSpace='normal';}
+      else e.style.fontSize=next+'px';
+    });
+  }
+  var t;function later(){clearTimeout(t);t=setTimeout(fit,60);}
+  window.addEventListener('resize',later);
+  window.addEventListener('load',fit);
+  document.addEventListener('jess-lang-change',later);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+  fit();
+})();
+</script>
 <script>
 (function(){
   var FOLDERS=['illust','qq'];

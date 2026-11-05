@@ -62,6 +62,12 @@
 .roomy .btns{gap:20px!important}
 @media(max-width:820px){.roomy{padding-top:68px;padding-bottom:68px}}
 @media(max-width:600px){.roomy{padding-top:56px;padding-bottom:56px}.roomy .sec-title{margin-bottom:36px}}
+
+/* 已選項目懸浮條:長圓形,離底部有距離;沒選東西時完全隱藏 */
+#sticky-cart-bar{position:fixed;left:50%;bottom:28px;z-index:40;width:min(560px,calc(100% - 28px));display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 10px;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1.5px solid var(--cocoa,#5A2E3E);border-radius:999px;box-shadow:0 4px 0 rgba(90,46,62,.22),0 12px 28px rgba(255,143,171,.28);transform:translate(-50%,24px);opacity:0;visibility:hidden;pointer-events:none;transition:transform .3s cubic-bezier(.3,1.4,.5,1),opacity .2s,visibility 0s .3s}
+#sticky-cart-bar.is-visible{transform:translate(-50%,0);opacity:1;visibility:visible;pointer-events:auto;transition:transform .3s cubic-bezier(.3,1.4,.5,1),opacity .2s,visibility 0s}
+@media(max-width:600px){#sticky-cart-bar{bottom:18px;padding:6px 8px;gap:8px}}
+@media(prefers-reduced-motion:reduce){#sticky-cart-bar,#sticky-cart-bar.is-visible{transition:none}}
 </style>
 </head>
 <body class="calc pb-24">
@@ -480,18 +486,18 @@
         </div>
     </main>
 
-    <!-- 網購體驗懸浮條 (Sticky Floating Bar for Multi-device/Mobile) -->
-    <div id="sticky-cart-bar" class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t-2 border-[#5A2E3E] px-4 py-3 shadow-[0_-4px_16px_rgba(90,46,62,0.15)] flex items-center justify-between gap-3 transition-transform duration-300">
-        <div class="flex items-center gap-3 overflow-hidden">
+    <!-- 已選項目懸浮條:有選項目時才出現,長圓形、離開網頁底部 -->
+    <div id="sticky-cart-bar" aria-hidden="true">
+        <div class="flex items-center gap-3 min-w-0 flex-1">
             <div class="w-10 h-10 rounded-full bg-pink-100 border border-[#5A2E3E] flex items-center justify-center shrink-0 text-pink-600 font-bold">
                 <i class="fa-solid fa-paint-brush text-sm"></i>
             </div>
-            <div class="truncate">
-                <div class="text-xs text-slate-500 font-medium truncate" id="float-item-title">已選項目：QQ人精緻上色</div>
-                <div class="text-base font-black text-pink-600 font-mono leading-none mt-0.5" id="float-item-price">NT$ 600</div>
+            <div class="truncate min-w-0">
+                <div class="text-xs text-slate-500 font-medium truncate" id="float-item-title"></div>
+                <div class="text-base font-black text-pink-600 font-mono leading-none mt-0.5" id="float-item-price"></div>
             </div>
         </div>
-        <button onclick="addToReceipt()" class="shrink-0 bg-pink-400 hover:bg-pink-300 text-slate-900 border border-[#5A2E3E] font-bold px-5 py-2.5 rounded-xl shadow-xs flex items-center gap-2 text-xs transition active:scale-95">
+        <button onclick="addToReceipt()" class="shrink-0 bg-pink-400 hover:bg-pink-300 text-slate-900 border border-[#5A2E3E] font-bold px-5 py-2.5 rounded-full shadow-xs flex items-center gap-2 text-xs transition active:scale-95">
             <i class="fa-solid fa-cart-plus"></i> 加入購物車
         </button>
     </div>
@@ -520,7 +526,7 @@
     </footer>
 
     <!-- 訊息提示 Toast -->
-    <div id="toast" class="fixed bottom-16 right-5 bg-slate-900/90 text-white text-xs sm:text-sm px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+    <div id="toast" class="fixed bottom-28 right-5 bg-slate-900/90 text-white text-xs sm:text-sm px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
         <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
         <span id="toast-msg">已複製文字結算單！</span>
     </div>
@@ -720,6 +726,12 @@
 
             document.getElementById('float-item-title').innerText = `已選項目：${currentItem.title}`;
             document.getElementById('float-item-price').innerText = `NT$ ${currentItem.totalPrice.toLocaleString()}`;
+
+            // 有選項目(或自己輸入了項目名稱)才顯示懸浮條;什麼都沒選時隱藏
+            const hasSelection = document.getElementById('project-title').value.trim() !== '';
+            const bar = document.getElementById('sticky-cart-bar');
+            bar.classList.toggle('is-visible', hasSelection);
+            bar.setAttribute('aria-hidden', String(!hasSelection));
         }
 
         function addToReceipt() {

@@ -31,7 +31,7 @@
     ['回覆時間：平日星期一至五 ・ 商業合作：',
       'Reply hours: Mon–Fri ・ Business inquiries: ',
       '返信時間：平日（月〜金） ・ お仕事のご相談：',
-      '답장時間: 평일 월~금 ・ 비즈니스 문의: '],
+      '답장 시간: 평일 월~금 ・ 비즈니스 문의: '],
     ['© 2026 潔諾 Jessroin。作品版權所有，請勿未經同意轉載使用。謝謝你來逛逛 ♡',
       '© 2026 潔諾 Jessroin. All artwork is copyrighted. Please do not repost or use it without permission. Thanks for stopping by ♡',
       '© 2026 潔諾 Jessroin。作品の著作権は作者に帰属します。無断転載・無断使用はご遠慮ください。ご覧いただきありがとうございます ♡',
@@ -83,7 +83,7 @@
     ['急件價錢以加急時間調整，基本急件價錢×1.5',
       'Rush fees depend on the deadline; the base rush fee is ×1.5',
       '急ぎの場合の料金は納期に応じて調整します。基本の特急料金は×1.5です',
-      '급건 요금은 급한 정도에 따라 조정되며, 기본 급건 요금은 ×1.5입니다'],
+      '긴급 작업 요금은 마감 일정에 따라 조정되며, 기본 긴급 작업 요금은 ×1.5입니다'],
 
     ['用途方面', 'Usage', 'ご利用範囲について', '사용 용도'],
     ['注意！實況者、VTuber皆為商用！',
@@ -91,9 +91,9 @@
       'ご注意：配信者・VTuberの方は商用扱いとなります！',
       '주의! 스트리머와 VTuber는 모두 상업 이용입니다!'],
     ['基本使用範圍：個人收藏使用 / 同人非營利作品使用 / 可縮放裁切 / 可註明出處後發布',
-      'Basic usage scope: personal collection / non-profit fan works / resizing and cropping allowed / may be posted with credit',
-      '基本の利用範囲：個人での鑑賞・保管／非営利の二次創作での使用／拡大縮小・トリミング可／出典を明記した上での公開可',
-      '기본 사용 범위: 개인 소장 / 비영리 팬 작품에서의 사용 / 확대·축소 및 자르기 가능 / 출처 표기 후 게시 가능'],
+      'Basic usage scope: personal collection / non-profit doujin works / resizing and cropping allowed / may be posted with credit',
+      '基本の利用範囲：個人での鑑賞・保管／同人・非営利作品での使用／拡大縮小・トリミング可／出典を明記した上での公開可',
+      '기본 사용 범위: 개인 소장 / 비영리 동인 작품에서의 사용 / 확대·축소 및 자르기 가능 / 출처 표기 후 게시 가능'],
     ['無論商業或非商業委託，只要有任何【觀看用】以外用途，皆需在委託時提前告知',
       'Whether commercial or non-commercial, any use other than viewing must be disclosed when you place the commission',
       '商用・非商用を問わず、【鑑賞用】以外の用途がある場合は、ご依頼時に事前にお知らせください',
@@ -355,7 +355,7 @@
       'Profit-making uses such as selling merchandise or creating LINE stickers',
       'グッズとしての販売、LINEスタンプ制作など営利目的の使用',
       '굿즈 판매, LINE 스티커 제작 등 영리 목적의 용도'],
-    ['非商×3～×10', 'Non-comm x3~x10', '非商用×3〜×10', '비상업×3~x10'],
+    ['非商×3～×10', 'Non-comm x3~x10', '非商用×3〜×10', '비상업×3~×10'],
     ['委託人不希望作品被公開展示時選擇，分為非商買斷、商用買斷與全買斷',
       'For clients who do not want the work displayed publicly; includes Non-commercial, Commercial, and Full Buyouts',
       '作品の公開を希望されない方向け。非商用買い切り・商用買い切り・完全買い切りがあります',
@@ -432,8 +432,8 @@
       'Includes Commercial Buyout; copyright (economic rights) is transferred to the client, who receives the source files to edit freely and may omit the artist credit (moral rights remain with the artist)',
       '商用買い切りを含み、著作財産権は依頼者に譲渡されます。元データを受け取って自由に改変でき、作者のクレジット表記も不要です（著作者人格権は絵師に残ります）',
       '상업 매절을 포함하며, 저작재산권이 의뢰인에게 양도됩니다. 원본 파일을 받아 직접 수정할 수 있고 작가 표기도 생략할 수 있습니다(저작인격권은 작가에게 남습니다)'],
-    ['加急處理 (x1.5)', 'Rush order (x1.5)', '特急対応 (x1.5)', '급건 처리 (x1.5)'],
-    ['加急處理', 'Rush order', '特急対応', '급건 처리'],
+    ['加急處理 (x1.5)', 'Rush order (x1.5)', '特急対応 (x1.5)', '긴급 작업 (x1.5)'],
+    ['加急處理', 'Rush order', '特急対応', '긴급 작업'],
     ['其他加價細項 (例：複雜服飾、道具、加人)',
       'Other add-ons (e.g. complex outfits, props, extra characters)',
       'その他の追加項目（例：複雑な衣装、小物、キャラ追加）',
@@ -459,7 +459,7 @@
       '20% deposit to book ➔ Confirm details ➔ Color draft ➔ 80% balance ➔ Final delivery',
       '20%の前金でスケジュール確定 ➔ 内容確認 ➔ カラーラフ ➔ 残り80% ➔ 納品',
       '20% 선금으로 순서 확정 ➔ 내용 확인 ➔ 컬러 러프 ➔ 80% 잔금 ➔ 완성본 납품'],
-    ['（僅供潔諾的委託人使用）', '(For Jessroin’s clients only)', '（潔諾のご依頼者 ім専用）', '(潔諾 의뢰인 전용)'],
+    ['（僅供潔諾的委託人使用）', '(For Jessroin’s clients only)', '（潔諾のご依頼者様専用）', '(潔諾 의뢰인 전용)'],
     ['複製文字結算單', 'Copy text receipt', 'テキストでコピー', '텍스트 견적서 복사'],
     ['下載圖片 (PNG 圖檔)', 'Download image (PNG)', '画像をダウンロード（PNG）', '이미지 다운로드 (PNG)'],
     ['清空結算單所有項目', 'Clear all items', 'すべての項目をクリア', '모든 항목 비우기'],
@@ -473,7 +473,7 @@
     /* 提示訊息 */
     ['已複製文字結算單！', 'Text receipt copied!', 'テキストをコピーしました！', '텍스트 견적서를 복사했어요!'],
     ['已成功下載結算單圖片！', 'Receipt image downloaded!', '画像をダウンロードしました！', '견적서 이미지를 다운로드했어요!'],
-    ['生成圖片失敗，請重試', 'Failed to create the image. Please try again', '画像の作成に失敗しました。もう一度お試しのうえ再試行してください', '이미지 생성에 실패했어요. 다시 시도해 주세요'],
+    ['生成圖片失敗，請重試', 'Failed to create the image. Please try again', '画像の作成に失敗しました。もう一度お試しください', '이미지 생성에 실패했어요. 다시 시도해 주세요'],
     ['結算單目前為空，請先加入項目！', 'The receipt is empty. Please add an item first!', 'お見積書が空です。先に項目を追加してください！', '견적서가 비어 있어요. 먼저 항목을 추가해 주세요!'],
     ['正在生成圖檔，請稍候...', 'Creating the image, please wait...', '画像を作成中です。しばらくお待ちください...', '이미지를 만드는 중입니다. 잠시만 기다려 주세요...'],
     ['已重置當前試算內容', 'Calculation has been reset', '現在の計算をリセットしました', '현재 견적을 초기화했어요'],
@@ -484,7 +484,7 @@
     ['【委託估價明細】', '【Commission Estimate】', '【ご依頼のお見積り】', '【커미션 견적 내역】'],
     ['底價：', 'Base price: ', '基本料金：', '기본 가격: '],
     ['授權：', 'License: ', 'ライセンス：', '라이선스: '],
-    ['特殊標註：加急處理 (x1.5)', 'Note: Rush order (x1.5)', '特記事項：特急対応 (x1.5)', '특이 사항: 급건 처리 (x1.5)'],
+    ['特殊標註：加急處理 (x1.5)', 'Note: Rush order (x1.5)', '特記事項：特急対応 (x1.5)', '특이 사항: 긴급 작업 (x1.5)'],
     ['小計：', 'Subtotal: ', '小計：', '소계: '],
     ['總計金額：', 'Total: ', '合計金額：', '총 금액: '],
     ['▶ 首款訂金 (20%)：', '▶ Deposit (20%): ', '▶ 前金（20%）：', '▶ 선금 (20%): '],
@@ -495,7 +495,17 @@
     ['1. 匯款20%訂金確定排單 ＞ 2. 確認委託內容 ＞ 3. 彩色草稿確認 ＞ 4. 匯款80%尾款 ＞ 5. 完稿交件',
       '1. Pay 20% deposit to secure your slot ＞ 2. Confirm commission details ＞ 3. Approve color draft ＞ 4. Pay 80% balance ＞ 5. Final delivery',
       '1. 20%の前金を送金しスケジュール確定 ＞ 2. 依頼内容の確認 ＞ 3. カラーラフの確認 ＞ 4. 残り80%を送金 ＞ 5. 完成・納品',
-      '1. 선금 20% 입금으로 작업 순서 확정 ＞ 2. 의뢰 내용 확인 ＞ 3. 컬러 러프 확인 ＞ 4. 잔금 80% 입금 ＞ 5. 완성본 납품']
+      '1. 선금 20% 입금으로 작업 순서 확정 ＞ 2. 의뢰 내용 확인 ＞ 3. 컬러 러프 확인 ＞ 4. 잔금 80% 입금 ＞ 5. 완성본 납품'],
+
+    /* ---------- 補漏:原本沒有對應翻譯的句子 ---------- */
+    ['買斷', 'Buyout', '買い切り', '매절'],
+    ['個人收藏使用、同人非營利作品使用、可縮放裁切、可註明出處後發布',
+      'Personal collection, non-profit doujin works, resizing and cropping allowed, may be posted with credit',
+      '個人での鑑賞・保管、同人・非営利作品での使用、拡大縮小・トリミング可、出典を明記した上での公開可',
+      '개인 소장, 비영리 동인 작품에서의 사용, 확대·축소 및 자르기 가능, 출처 표기 후 게시 가능'],
+    ['全身/立繪', 'Full Body / Standing Art', '全身／立ち絵', '전신/입상 일러스트'],
+    ['已複製結算單文字至剪貼簿！', 'Text receipt copied to clipboard!', 'テキストをクリップボードにコピーしました！', '견적서 텍스트를 클립보드에 복사했어요!'],
+    ['加入購物車', 'Add to Cart', 'カートに追加', '장바구니에 담기']
   ];
 
   /* 變動句子對照 */
@@ -513,6 +523,7 @@
     ['^已載入項目：(.+) \\(\\$([\\d,.]+)\\)$', 'Loaded: {1} ($%2)', '読み込みました：{1}（$%2）', '불러옴: {1} ($%2)'],
     ['^已加購：(.+) \\(\\+\\$([\\d,.]+)\\)$', 'Added: {1} (+$%2)', '追加しました：{1}（+$%2）', '추가함: {1} (+$%2)'],
     ['^已加入結算單：(.+)$', 'Added to receipt: {1}', 'お見積書に追加しました：{1}', '견적서에 추가함: {1}'],
+    ['^已選項目：(.+)$', 'Selected: {1}', '選択中：{1}', '선택한 항목: {1}'],
     ['^底價: (.+)$', 'Base price: %1', '基本料金: %1', '기본 가격: %1'],
     ['^加價細項 \\(\\+(.+)\\)：$', 'Add-on (+{1}): ', '追加項目（+{1}）：', '추가 항목 (+{1}): '],
     ['^\\+ (.+)$', '+ {1}', '+ {1}', '+ {1}'],
@@ -700,6 +711,14 @@
       '.jl-menu button{display:block;width:100%;padding:8px 12px;border:0;border-radius:10px;background:none;color:var(--cocoa,#5A2E3E);font:inherit;text-align:left;cursor:pointer}' +
       '.jl-menu button:hover{background:#FFF1F4}' +
       '.jl-menu button[aria-current="true"]{background:#FFE0E8;font-weight:700}' +
+      /* 導覽列:左 logo、中間選單置中、右邊試算+語言按鈕(螢幕夠寬時左右等寬,選單才會真正置中) */
+      '.nav-actions{display:flex;align-items:center;gap:12px;margin-left:auto}' +
+      'header nav>ul{margin-right:auto}' +
+      '@media(min-width:821px){' +
+        'header nav>.logo{flex:1 1 0;white-space:nowrap}' +
+        'header nav>ul{flex:0 0 auto;margin:0 auto;justify-content:center}' +
+        'header nav>.nav-actions{flex:1 1 0;justify-content:flex-end;margin-left:0}' +
+      '}' +
       '.jl.jl-float{position:fixed;left:16px;bottom:16px;z-index:300;margin:0}' +
       '.jl.jl-float .jl-menu{right:auto;left:0;top:auto;bottom:calc(100% + 8px)}' +
       'html[lang="ko"] :where(body,button,input,select,textarea){font-family:"Zen Maru Gothic","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",sans-serif}';
@@ -761,9 +780,6 @@
       if (calcBtn) {
         var actionWrap = document.createElement('div');
         actionWrap.className = 'nav-actions';
-        actionWrap.style.cssText = 'display:flex; align-items:center; gap:12px; margin-left:auto;';
-        var ul = nav.querySelector('ul');
-        if (ul) ul.style.marginRight = 'auto';
         calcBtn.parentNode.insertBefore(actionWrap, calcBtn);
         actionWrap.appendChild(calcBtn);
         actionWrap.appendChild(wrap);
