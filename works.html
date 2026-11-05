@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>作品集 | 潔諾Jessroin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
@@ -40,6 +41,10 @@
 .lb-prev{left:12px;top:50%;transform:translateY(-50%)}.lb-next{right:12px;top:50%;transform:translateY(-50%)}
 .lb-cap{position:absolute;left:0;right:0;bottom:14px;text-align:center;color:#fff;font-weight:700;line-height:1.6;padding:0 70px}
 @media(max-width:560px){.lb{padding:56px 12px 60px}.lb-prev{left:6px}.lb-next{right:6px}}
+</style>
+<style>
+.polaroid.zoomable{cursor:zoom-in}
+.polaroid.zoomable:focus-visible{outline:3px solid #FF8FAB;outline-offset:3px}
 </style>
 </head>
 <body>
@@ -125,8 +130,21 @@
     f.dataset.nat=e.nat;f.dataset.mix=e.mix;
     if(item.w/item.h>=WIDE_RATIO)f.classList.add('wide');
     var shot=el('div','shot');shot.style.setProperty('--ar',item.w+'/'+item.h);
-    var im=el('img');im.src=item.src;im.alt=cat.name+' '+(e.idx+1);
+    var im=el('img');im.decoding='async';
+    if(e.mix>5)im.loading='lazy'; /* 前幾張馬上載入,其餘捲到附近才載入 */
+    im.src=item.src;im.alt=cat.name+' '+(e.idx+1);
     shot.appendChild(im);f.appendChild(shot);
+    /* 點圖片放大(和 VTuber 頁一樣用燈箱),可左右切換目前看得到的所有圖 */
+    f.classList.add('zoomable');f.tabIndex=0;f.setAttribute('role','button');
+    f.setAttribute('aria-label','放大檢視 '+im.alt);
+    function openZoom(){
+      var figs=[].slice.call(box.children).filter(function(w){return !w.hidden&&w.dataset.cat!=='motion';});
+      figs.sort(function(a,b){return (+a.style.order)-(+b.style.order);});
+      var list=figs.map(function(w){var i=w.querySelector('img');return {src:i.src,name:i.alt};});
+      lbOpen(cat.name,list,Math.max(0,figs.indexOf(f)),f);
+    }
+    f.addEventListener('click',openZoom);
+    f.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();openZoom();}});
     box.appendChild(f);
   }
 
@@ -164,8 +182,9 @@
   function lbShow(k){
     var s=lbState,n=s.imgs.length;
     s.cur=(k+n)%n;
-    lb.img.src=s.imgs[s.cur].src;lb.img.alt=s.name+' '+(s.cur+1);
-    lb.cap.textContent=s.name+(n>1?' '+(s.cur+1)+' / '+n:'');
+    var it=s.imgs[s.cur];
+    lb.img.src=it.src;lb.img.alt=it.name||(s.name+' '+(s.cur+1));
+    lb.cap.textContent=it.name||(s.name+(n>1?' '+(s.cur+1)+' / '+n:''));
     lb.prev.hidden=lb.next.hidden=(n<2);
   }
   function lbClose(){
@@ -273,7 +292,7 @@
     }
     function build(lists){var pos=lists.map(function(){return 0;});return slots.map(function(gi){return lists[gi][pos[gi]++];});}
     var best=build(groups),bestScore=score(best);
-    var trials=Math.max(200,Math.min(2500,Math.floor(40000/Math.max(1,slots.length))));
+    var trials=Math.max(200,Math.min(600,Math.floor(40000/Math.max(1,slots.length))));
     for(i=0;i<trials;i++){
       var lists=groups.map(function(g){
         var a=g.slice(),j,x,y;
