@@ -1,4 +1,4 @@
-/* i18n.js 版本:2026-11-05-c(用來確認網站上跑的是不是最新檔案) */
+/* i18n.js 版本:2026-11-05-d(用來確認網站上跑的是不是最新檔案) */
 /* =====================================================================
    i18n.js  —  潔諾Jessroin 網站的語言切換(中文 / English / 日本語 / 한국어)
    ===================================================================== */
@@ -17,7 +17,7 @@
     { code: 'ko', label: '한국어',  html: 'ko' }
   ];
   var IDX = { en: 1, ja: 2, ko: 3 };
-  if (typeof window !== 'undefined') window.JessI18nVersion = '2026-11-05-c';
+  if (typeof window !== 'undefined') window.JessI18nVersion = '2026-11-05-d';
 
   /* ===== 幣值換算(只在 <body data-convert-currency> 的頁面:價目表、委託須知) =====
      價格一律以新台幣 NT$ 為準,切到其他語言時改顯示概算外幣。
@@ -45,7 +45,7 @@
     var f = FMT[l];
     if (!f) return s;
     return s.replace(/NT\$\s?(\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?/g, function (_, n) { return f(nnum(n)); })
-            .replace(/^\+(\d[\d,]*)(?:([～~])(\d[\d,]*))?$/, function (_, a, sep, b) { return '+' + f(nnum(a)) + (b ? sep + f(nnum(b)) : ''); });
+            .replace(/^\+(\d{1,3}(?:,\d{3})+|\d+)(?:([～~])(\d{1,3}(?:,\d{3})+|\d+))?(?=\s|$)/, function (_, a, sep, b) { return '+' + f(nnum(a)) + (b ? sep + f(nnum(b)) : ''); });
   }
 
   /* 翻譯表: [ 中文, English, 日本語, 한국어 ] */
@@ -536,7 +536,8 @@
       '개인 소장, 비영리 동인 작품에서의 사용, 확대·축소 및 자르기 가능, 출처 표기 후 게시 가능'],
     ['全身/立繪', 'Full Body', '全身', '전신'],
     ['已複製結算單文字至剪貼簿！', 'Text receipt copied to clipboard!', 'テキストをクリップボードにコピーしました！', '견적서 텍스트를 클립보드에 복사했어요!'],
-    ['加入購物車', 'Add to Cart', 'カートに追加', '장바구니에 담기']
+    ['加入購物車', 'Add to Cart', 'カートに追加', '장바구니에 담기'],
+    ['※ 外幣金額為概算，以新台幣（NT$）為準', '* Amounts are approximate conversions; NT$ prices apply.', '※ 金額は目安の換算額です。実際はNT$の金額が基準です。', '※ 금액은 대략적인 환산액이며 NT$ 금액이 기준입니다.']
   ];
 
   /* 變動句子對照 */
@@ -551,8 +552,8 @@
     ['^NT\\$ ([\\d,]+) / 組$', 'NT$ %1 / set', 'NT$ %1 / セット', 'NT$ %1 / 세트'],
     ['^NT\\$ ([\\d,]+)／張$', 'NT$ %1 / piece', 'NT$ %1／枚', 'NT$ %1／장'],
     ['^已加入 (\\d+) 個項目$', 'Items added: %1', '追加済み：%1件', '추가된 항목: %1개'],
-    ['^已載入項目：(.+) \\(\\$([\\d,.]+)\\)$', 'Loaded: {1} ($%2)', '読み込みました：{1}（$%2）', '불러옴: {1} ($%2)'],
-    ['^已加購：(.+) \\(\\+\\$([\\d,.]+)\\)$', 'Added: {1} (+$%2)', '追加しました：{1}（+$%2）', '추가함: {1} (+$%2)'],
+    ['^已載入項目：(.+) \\(\\$([\\d,.]+)\\)$', 'Loaded: {1} (NT$ %2)', '読み込みました：{1}（NT$ %2）', '불러옴: {1} (NT$ %2)'],
+    ['^已加購：(.+) \\(\\+\\$([\\d,.]+)\\)$', 'Added: {1} (+NT$ %2)', '追加しました：{1}（+NT$ %2）', '추가함: {1} (+NT$ %2)'],
     ['^已加入結算單：(.+)$', 'Added to receipt: {1}', 'お見積書に追加しました：{1}', '견적서에 추가함: {1}'],
     ['^NT\\$ ([\\d,]+) 起$', 'From NT$ %1', 'NT$ %1〜', 'NT$ %1부터'],
     ['^已選項目：(.+)$', 'Selected: {1}', '選択中：{1}', '선택한 항목: {1}'],
@@ -907,7 +908,7 @@
 
   function init() {
     origHtmlLang = document.documentElement.lang || 'zh-Hant';
-    CONVERT = !!(document.body && document.body.hasAttribute('data-convert-currency')) || /\/(price|notice)(\.html)?\/?$/.test(location.pathname);
+    CONVERT = !!(document.body && document.body.hasAttribute('data-convert-currency')) || /\/(price|notice|calc)(\.html)?\/?$/.test(location.pathname);
     buildUI();
     setLang(pickInitial(), false);
     loadFx();
@@ -917,8 +918,10 @@
     t: function (s) {
       if (lang === 'zh') return s;
       var r = tr(s, lang);
-      return r == null ? s : r;
+      r = r == null ? s : r;
+      return CONVERT ? money(r, lang) : r;
     },
+    money: function (s) { return (CONVERT && lang !== 'zh') ? money(s, lang) : s; },
     setLang: setLang,
     get lang() { return lang; }
   };

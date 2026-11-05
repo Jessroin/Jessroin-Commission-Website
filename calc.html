@@ -535,6 +535,10 @@
     <!-- JavaScript 核心邏輯 -->
     <script>
         const T = s => (window.JessI18n ? window.JessI18n.t(s) : s);
+        /* 其他語言時把 NT$ 金額換成當地幣值(只影響顯示/匯出,內部計算仍是新台幣) */
+        const MONEY = s => (window.JessI18n && window.JessI18n.money ? window.JessI18n.money(s) : s);
+        const CONVERTED = () => !!(window.JessI18n && window.JessI18n.lang !== 'zh');
+        const FX_NOTE = '※ 外幣金額為概算，以新台幣（NT$）為準';
         let addons = [];
         let receiptItems = [];
         let isCommercialPreset = false;
@@ -943,7 +947,7 @@
                 y += 18;
 
                 receiptItems.forEach((item, idx) => {
-                    const priceStr = `NT$ ${item.totalPrice.toLocaleString()}`;
+                    const priceStr = MONEY(`NT$ ${item.totalPrice.toLocaleString()}`);
                     setFont(15, 700);
                     const priceW = ctx.measureText(priceStr).width;
                     const titleX = M + PAD + 28;
@@ -970,7 +974,7 @@
                     ry += 20;
                     item.addons.forEach(a => {
                         txt(T(`+ ${a.name}`), M + PAD + 8, ry + 9, 11, C.muted);
-                        txt(`NT$ ${a.price.toLocaleString()}`, W - M - PAD, ry + 9, 11, C.muted, 500, 'right');
+                        txt(MONEY(`NT$ ${a.price.toLocaleString()}`), W - M - PAD, ry + 9, 11, C.muted, 500, 'right');
                         ry += 18;
                     });
                     if (item.isUrgent) {
@@ -1003,6 +1007,7 @@
                 flowLines.forEach((ln, k) => txt(ln, M + PAD, y + 16 + 22 + 4 + 10 + k * 20, 12, C.muted));
                 y += fh + 22;
                 txt(T('（僅供潔諾的委託人使用）'), W / 2, y, 11, C.muted, 500, 'center');
+                if (CONVERTED()) { y += 20; txt(T(FX_NOTE), W / 2, y, 10, C.muted, 500, 'center'); }
                 y += 28;
 
                 ctx.fillStyle = C.pink;
@@ -1039,19 +1044,19 @@
 
             receiptItems.forEach((item, idx) => {
                 text += `${idx + 1}. ${T(item.title)}\n`;
-                text += `   • ${T('底價：')}NT$ ${item.basePrice.toLocaleString()}\n`;
+                text += `   • ${T('底價：')}${MONEY(`NT$ ${item.basePrice.toLocaleString()}`)}\n`;
                 text += `   • ${T('授權：')}${T(item.usageLabel)}\n`;
                 
                 if (item.addons.length > 0) {
                     item.addons.forEach(a => {
-                        text += `   • ${T(`加價細項 (+${a.name})：`)}NT$ ${a.price.toLocaleString()}\n`;
+                        text += `   • ${T(`加價細項 (+${a.name})：`)}${MONEY(`NT$ ${a.price.toLocaleString()}`)}\n`;
                     });
                 }
                 
                 if (item.isUrgent) {
                     text += `   • ${T('特殊標註：加急處理 (x1.5)')}\n`;
                 }
-                text += `   ${T('小計：')}NT$ ${item.totalPrice.toLocaleString()}\n`;
+                text += `   ${T('小計：')}${MONEY(`NT$ ${item.totalPrice.toLocaleString()}`)}\n`;
             });
 
             text += `------------------------------\n`;
@@ -1061,6 +1066,7 @@
             text += `------------------------------\n`;
             text += `${T('【委託流程與規範】')}\n`;
             text += `${T('1. 匯款20%訂金確定排單 ＞ 2. 確認委託內容 ＞ 3. 彩色草稿確認 ＞ 4. 匯款80%尾款 ＞ 5. 完稿交件')}\n`;
+            if (CONVERTED()) text += `${T(FX_NOTE)}\n`;
 
             text = text.trimEnd();
 
