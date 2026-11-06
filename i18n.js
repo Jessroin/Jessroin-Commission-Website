@@ -1,4 +1,4 @@
-/* i18n.js 版本:2026-11-05-d(用來確認網站上跑的是不是最新檔案) */
+/* i18n.js 版本:2026-11-05-e(用來確認網站上跑的是不是最新檔案) */
 /* =====================================================================
    i18n.js  —  潔諾Jessroin 網站的語言切換(中文 / English / 日本語 / 한국어)
    ===================================================================== */
@@ -17,7 +17,7 @@
     { code: 'ko', label: '한국어',  html: 'ko' }
   ];
   var IDX = { en: 1, ja: 2, ko: 3 };
-  if (typeof window !== 'undefined') window.JessI18nVersion = '2026-11-05-d';
+  if (typeof window !== 'undefined') window.JessI18nVersion = '2026-11-05-e';
 
   /* ===== 幣值換算(只在 <body data-convert-currency> 的頁面:價目表、委託須知) =====
      價格一律以新台幣 NT$ 為準,切到其他語言時改顯示概算外幣。
@@ -25,7 +25,8 @@
      頁面會嘗試抓即時匯率(每 12 小時一次),抓不到就用這組。想手動調整就改這三個數字 */
   var RATES = { en: 0.0307, ja: 4.85, ko: 44 };
   var FX_URL = 'https://open.er-api.com/v6/latest/TWD';
-  var FX_KEY = 'jess-fx', FX_TTL = 12 * 3600 * 1000;
+  var FX_URL2 = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/twd.json';
+  var FX_KEY = 'jess-fx2', FX_TTL = 6 * 3600 * 1000, RATE_DATE = '';
   var CONVERT = false;
 
   function nnum(s) { return parseFloat(String(s).replace(/,/g, '')); }
@@ -36,15 +37,15 @@
     ko: function (n) { var v = n * RATES.ko; return group(v >= 1000 ? Math.round(v / 100) * 100 : Math.round(v / 10) * 10) + '원'; }
   };
   var NOTE = {
-    en: function () { return 'Prices are set in NT$. Amounts shown here are rough conversions (1 NT$ ≈ US$' + RATES.en.toFixed(4) + '); the NT$ price is what applies.'; },
-    ja: function () { return '価格は台湾ドル（NT$）で設定しています。表示金額は目安の換算額（1 NT$ ≒ ' + RATES.ja.toFixed(2) + '円）で、実際のお支払いはNT$の金額が基準です。'; },
-    ko: function () { return '가격은 대만 달러(NT$) 기준입니다. 표시된 금액은 대략적인 환산액(1 NT$ ≈ ' + RATES.ko.toFixed(1) + '원)이며, 실제 결제는 NT$ 금액을 따릅니다.'; }
+    en: function () { return 'Prices are set in NT$. Amounts shown here are rough conversions (1 NT$ ≈ US$' + RATES.en.toFixed(4) + (RATE_DATE ? ', rate of ' + RATE_DATE : '') + '); the NT$ price is what applies.'; },
+    ja: function () { return '価格は台湾ドル（NT$）で設定しています。表示金額は目安の換算額（1 NT$ ≒ ' + RATES.ja.toFixed(2) + '円' + (RATE_DATE ? '、' + RATE_DATE + 'のレート' : '') + '）で、実際のお支払いはNT$の金額が基準です。'; },
+    ko: function () { return '가격은 대만 달러(NT$) 기준입니다. 표시된 금액은 대략적인 환산액(1 NT$ ≈ ' + RATES.ko.toFixed(1) + '원' + (RATE_DATE ? ', ' + RATE_DATE + ' 기준' : '') + ')이며, 실제 결제는 NT$ 금액을 따릅니다.'; }
   };
   /* 把文字裡的 NT$ 金額換成當地幣值;價目表的加購價「+300」「+100～300」也一起換 */
-  function money(s, l) {
+  function money(s, l, both) {
     var f = FMT[l];
     if (!f) return s;
-    return s.replace(/NT\$\s?(\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?/g, function (_, n) { return f(nnum(n)); })
+    return s.replace(/NT\$\s?(\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?/g, function (_, n) { return both ? f(nnum(n)) + ' (NT$ ' + group(Math.round(nnum(n))) + ')' : f(nnum(n)); })
             .replace(/^\+(\d{1,3}(?:,\d{3})+|\d+)(?:([～~])(\d{1,3}(?:,\d{3})+|\d+))?(?=\s|$)/, function (_, a, sep, b) { return '+' + f(nnum(a)) + (b ? sep + f(nnum(b)) : ''); });
   }
 
@@ -287,6 +288,7 @@
     ['全身／立繪', 'Full Body / Standing Art', '全身／立ち絵', '전신/입상 일러스트'],
     ['貼圖', 'Stickers', 'スタンプ', '스티커'],
     ['範例圖', 'Sample Image', 'サンプル画像', '샘플 이미지'],
+    ['範例圖載入中...', 'Loading sample image...', 'サンプル画像を読み込み中...', '샘플 이미지 불러오는 중...'],
     
     ['塗鴉（非商業價格）', 'Doodle (Non-commercial)', 'ラクガキ（非商用価格）', '낙서 (비상업 가격)'],
     ['塗鴉驚喜包', 'Doodle Surprise Pack', 'ラクガキサプライズパック', '낙서 서프라이즈 팩'],
@@ -618,7 +620,7 @@
     var w = splitWs(orig);
     if (!w.core) return;
     var out = lang === 'zh' ? null : tr(w.core, lang);
-    if (CONVERT && lang !== 'zh') out = money(out == null ? w.core : out, lang);
+    if (CONVERT && lang !== 'zh') out = money(out == null ? w.core : out, lang, !!(node.parentElement && node.parentElement.closest('[data-fx-both]')));
     var nv = (out == null || out === w.core) ? orig : w.a + out + w.b;
     if (nv !== v) node.nodeValue = nv;
     if (nv !== orig || e) TX.set(node, { orig: orig, applied: nv });
@@ -746,24 +748,49 @@
     el.textContent = NOTE[lang]();
   }
 
-  function applyFx(o) {
-    if (!o || !(o.en > 0.02 && o.en < 0.05 && o.ja > 3 && o.ja < 8 && o.ko > 30 && o.ko < 70)) return;
+  function applyFx(o, date) {
+    if (!o || !(o.en > 0.02 && o.en < 0.05 && o.ja > 3 && o.ja < 8 && o.ko > 30 && o.ko < 70)) return false;
     RATES = o;
+    RATE_DATE = date || '';
     if (lang !== 'zh') setLang(lang, false);
+    return true;
   }
+  function ymd(v) {
+    var d = new Date(v);
+    return isNaN(d) ? '' : d.toISOString().slice(0, 10);
+  }
+  /* 匯率來源:先用 open.er-api.com(每天更新),失敗再用 jsDelivr 上的 currency-api,
+     兩個都失敗就一直用上面 RATES 的備用匯率。抓到的匯率存在瀏覽器 6 小時,不會每次開頁都重抓 */
+  var FX_SOURCES = [
+    function () {
+      return fetch(FX_URL).then(function (r) { return r.json(); }).then(function (d) {
+        var r = d && d.rates;
+        return r && { o: { en: r.USD, ja: r.JPY, ko: r.KRW }, date: ymd(d.time_last_update_utc) };
+      });
+    },
+    function () {
+      return fetch(FX_URL2).then(function (r) { return r.json(); }).then(function (d) {
+        var r = d && d.twd;
+        return r && { o: { en: r.usd, ja: r.jpy, ko: r.krw }, date: (d.date || '').slice(0, 10) };
+      });
+    }
+  ];
   function loadFx() {
     if (!CONVERT) return;
     var c = null;
     try { c = JSON.parse(localStorage.getItem(FX_KEY) || 'null'); } catch (e) {}
-    if (c && c.r && Date.now() - c.t < FX_TTL) { applyFx(c.r); return; }
+    if (c && c.r && Date.now() - c.t < FX_TTL) { applyFx(c.r, c.d); return; }
     if (!window.fetch) return;
-    fetch(FX_URL).then(function (r) { return r.json(); }).then(function (d) {
-      var r = d && d.rates;
-      if (!r) return;
-      var o = { en: r.USD, ja: r.JPY, ko: r.KRW };
-      try { localStorage.setItem(FX_KEY, JSON.stringify({ t: Date.now(), r: o })); } catch (e) {}
-      applyFx(o);
-    }).catch(function () {});
+    (function next(i) {
+      if (i >= FX_SOURCES.length) return;
+      var p;
+      try { p = FX_SOURCES[i](); } catch (e) { return next(i + 1); }
+      p.then(function (res) {
+        if (res && applyFx(res.o, res.date)) {
+          try { localStorage.setItem(FX_KEY, JSON.stringify({ t: Date.now(), r: res.o, d: res.date })); } catch (e) {}
+        } else next(i + 1);
+      }).catch(function () { next(i + 1); });
+    })(0);
   }
 
   /* ========== 語言按鈕 ========== */
@@ -921,7 +948,7 @@
       r = r == null ? s : r;
       return CONVERT ? money(r, lang) : r;
     },
-    money: function (s) { return (CONVERT && lang !== 'zh') ? money(s, lang) : s; },
+    money: function (s, both) { return (CONVERT && lang !== 'zh') ? money(s, lang, both) : s; },
     setLang: setLang,
     get lang() { return lang; }
   };

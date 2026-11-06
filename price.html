@@ -118,7 +118,7 @@
          每個資料夾裡的圖片命名為 01.jpg、02.jpg、03.jpg…(數字要連續)。
          資料夾是空的時,會顯示粉色的「範例圖」佔位框。 -->
     <div class="panel" id="doodle">
-      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="example"><div class="ph"><span>範例圖載入中...</span></div></div>
       <div class="card">
         <h3>塗鴉（非商業價格）</h3>
         <ul class="prices">
@@ -134,7 +134,7 @@
     </div>
 
     <div class="panel" id="qq" hidden>
-      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="example"><div class="ph"><span>範例圖載入中...</span></div></div>
       <div class="card">
         <h3>QQ人（非商業價格）</h3>
         <ul class="prices">
@@ -146,7 +146,7 @@
     </div>
 
     <div class="panel" id="avatar" hidden>
-      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="example"><div class="ph"><span>範例圖載入中...</span></div></div>
       <div class="card">
         <h3>頭貼（非商業價格）</h3>
         <ul class="prices">
@@ -158,7 +158,7 @@
     </div>
 
     <div class="panel" id="half" hidden>
-      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="example"><div class="ph"><span>範例圖載入中...</span></div></div>
       <div class="card">
         <h3>半身（非商業價格）</h3>
         <ul class="prices">
@@ -170,7 +170,7 @@
     </div>
 
     <div class="panel" id="full" hidden>
-      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="example"><div class="ph"><span>範例圖載入中...</span></div></div>
       <div class="card">
         <h3>全身／立繪（非商業價格）</h3>
         <ul class="prices">
@@ -182,7 +182,7 @@
     </div>
 
     <div class="panel" id="illust" hidden>
-      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="example"><div class="ph"><span>範例圖載入中...</span></div></div>
       <div class="card">
         <h3>插圖（非商業價格）</h3>
         <p>插圖皆為精緻上色，依插圖複雜程度，價格可能往上調漲</p>
@@ -195,7 +195,7 @@
     </div>
 
     <div class="panel" id="sticker" hidden>
-      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="example"><div class="ph"><span>範例圖載入中...</span></div></div>
       <div class="card">
         <h3>貼圖（普通商用價格）</h3>
         <div class="item">
@@ -215,7 +215,7 @@
     </div>
 
     <div class="panel" id="vtuber" hidden>
-      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="example"><div class="ph"><span>範例圖載入中...</span></div></div>
       <div class="card">
         <h3>VTuber（普通商用價格）</h3>
         <div class="item">
@@ -259,7 +259,7 @@
     </div>
 
     <div class="panel" id="gummy" hidden>
-      <div class="example"><div class="ph"><span>範例圖</span></div></div>
+      <div class="example"><div class="ph"><span>範例圖載入中...</span></div></div>
       <div class="card">
         <h3>軟糖（非商業價格）</h3>
         <ul class="prices">
@@ -336,7 +336,7 @@
     if(!ex||ex.dataset.loaded)return;
     ex.dataset.loaded='1';
     JessGallery.findImages('images/price/'+p.id).then(function(list){
-      if(!list.length)return; /* 沒有圖就保留「範例圖」佔位框 */
+      if(!list.length){var ph=ex.querySelector('.ph span');if(ph)ph.textContent='範例圖';return;} /* 沒有圖就保留「範例圖」佔位框 */
       buildCarousel(ex,list);
     });
   }
@@ -347,7 +347,9 @@
     var track=document.createElement('div');track.className='car-track';
     var slides=list.map(function(item,i){
       var s=document.createElement('div');s.className='car-slide';
-      var im=document.createElement('img');im.decoding='async';if(i>0)im.loading='lazy';im.src=item.src;im.alt='範例圖 '+(i+1);
+      var im=document.createElement('img');im.decoding='async';if(i>0)im.loading='lazy';
+      im.onerror=function(){im.onerror=null;if(im.src.indexOf(item.src)<0)im.src=item.src;};
+      im.src=item.mid||item.src;im.alt='範例圖 '+(i+1);
       s.appendChild(im);track.appendChild(s);return s;
     });
     wrap.appendChild(track);ex.appendChild(wrap);

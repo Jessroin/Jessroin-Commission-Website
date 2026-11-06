@@ -120,8 +120,10 @@
       var d=document.createElement('div');d.className='shot-big';
       d.style.setProperty('--ar',item.w+'/'+item.h);
       if(hidden)d.setAttribute('aria-hidden','true');
-      var im=document.createElement('img');im.src=item.src;im.alt=hidden?'':'作品 '+(i+1);
+      var im=document.createElement('img');im.alt=hidden?'':'作品 '+(i+1);
       im.decoding='async';
+      im.onerror=function(){im.onerror=null;if(im.src.indexOf(item.src)<0)im.src=item.src;}; /* 縮圖不見時退回原圖 */
+      im.src=item.thumb||item.src;
       d.appendChild(im);return d;
     }
 

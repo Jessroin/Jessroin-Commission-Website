@@ -423,7 +423,7 @@
                     <span id="receipt-count-badge" class="bg-pink-50 text-pink-600 px-2 py-0.5 rounded-full text-[10px] font-medium border border-pink-100">已加入 0 個項目</span>
                 </div>
 
-                <div id="receipt-card" class="calc-receipt bg-white text-slate-800 rounded-t-xl shadow-md border border-slate-200/60 relative font-mono select-none overflow-hidden">
+                <div id="receipt-card" data-fx-both class="calc-receipt bg-white text-slate-800 rounded-t-xl shadow-md border border-slate-200/60 relative font-mono select-none overflow-hidden">
                     <div class="h-2 bg-pink-200 w-full"></div>
 
                     <div class="p-6">
@@ -536,7 +536,7 @@
     <script>
         const T = s => (window.JessI18n ? window.JessI18n.t(s) : s);
         /* 其他語言時把 NT$ 金額換成當地幣值(只影響顯示/匯出,內部計算仍是新台幣) */
-        const MONEY = s => (window.JessI18n && window.JessI18n.money ? window.JessI18n.money(s) : s);
+        const MONEY = s => (window.JessI18n && window.JessI18n.money ? window.JessI18n.money(s, true) : s); /* 收據:外幣 (NT$ 原價) */
         const CONVERTED = () => !!(window.JessI18n && window.JessI18n.lang !== 'zh');
         const FX_NOTE = '※ 外幣金額為概算，以新台幣（NT$）為準';
         let addons = [];

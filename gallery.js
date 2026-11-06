@@ -1,15 +1,18 @@
 /* gallery.js:自動找出資料夾裡的作品圖
    規則:資料夾裡的圖片要命名為 01.jpg、02.jpg、03.jpg…(從 01 開始、數字要連續)
-   副檔名可以是 jpg、png、webp。最多自動讀取 99 張。
-   找到第一個缺號就會停止,所以中間不要跳號。
+   副檔名可以是 jpg、png、webp。最多自動讀取 99 張。找到第一個缺號就會停止,所以中間不要跳號。
 
-   速度優化:
-   1. 先找 01 確認副檔名,之後每 8 張一批「同時」探測(原本是一張一張排隊)
-   2. 同一個資料夾在同一個瀏覽分頁只探測一次,結果放在 sessionStorage(10 分鐘內換頁不用重找) */
+   兩種讀取方式:
+   1. 有 images/manifest.json(執行 make_thumbs.py 產生)→ 只讀這一個小檔案就知道所有圖的檔名與寬高,
+      格子用小縮圖、點開放大才載入大圖。快很多。
+      清單之後如果又多放了新圖(還沒重新執行 make_thumbs.py),也會自動接著找,不會漏掉。
+   2. 沒有清單 → 退回「同時探測」:先找 01 確認副檔名,之後每 8 張一批同時探測。
+
+   回傳的每一項:{ src:原圖, thumb:小圖(沒有就是原圖), mid:中圖(沒有就是原圖), w, h } */
 (function () {
   var EXTS = ['jpg', 'png', 'webp'];
   var BATCH = 8, TTL = 10 * 60 * 1000;
-  var memo = {};
+  var memo = {}, manifestP = null;
 
   function pad(n) { return n < 10 ? '0' + n : '' + n; }
 
@@ -19,7 +22,7 @@
       var im = new Image();
       im.decoding = 'async';
       im.onload = function () {
-        resolve(im.naturalWidth && im.naturalHeight ? { src: src, w: im.naturalWidth, h: im.naturalHeight } : null);
+        resolve(im.naturalWidth && im.naturalHeight ? { src: src, thumb: src, mid: src, w: im.naturalWidth, h: im.naturalHeight } : null);
       };
       im.onerror = function () { resolve(null); };
       im.src = src;
@@ -39,6 +42,38 @@
     });
   }
 
+  // 從第 start 張開始一批一批同時探測,遇到缺號就停
+  function scan(folder, max, out, start, hint) {
+    function batch(s) {
+      if (s > max) return Promise.resolve();
+      var end = Math.min(s + BATCH - 1, max), ps = [], i;
+      for (i = s; i <= end; i++) ps.push(tryIndex(folder, i, hint));
+      return Promise.all(ps).then(function (rs) {
+        for (var k = 0; k < rs.length; k++) {
+          if (!rs[k]) return;
+          out.push(rs[k]);
+        }
+        return batch(end + 1);
+      });
+    }
+    if (start > 1) return batch(start);
+    return tryIndex(folder, 1, null).then(function (first) {
+      if (!first) return;
+      out.push(first);
+      hint = first.src.split('.').pop();
+      return batch(2);
+    });
+  }
+
+  function getManifest() {
+    if (!manifestP) {
+      manifestP = window.fetch
+        ? fetch('images/manifest.json').then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+        : Promise.resolve(null);
+    }
+    return manifestP;
+  }
+
   function readCache(key) {
     try {
       var c = JSON.parse(sessionStorage.getItem(key) || 'null');
@@ -53,30 +88,27 @@
 
   function findImages(folder, max) {
     max = max || 99;
-    var key = 'jg1:' + folder + ':' + max;
+    var key = 'jg2:' + folder + ':' + max;
     if (memo[key]) return memo[key];
     var cached = readCache(key);
     if (cached) return (memo[key] = Promise.resolve(cached));
 
-    var out = [], hint = null;
-    function batch(start) {
-      if (start > max) return Promise.resolve();
-      var end = Math.min(start + BATCH - 1, max), ps = [], i;
-      for (i = start; i <= end; i++) ps.push(tryIndex(folder, i, hint));
-      return Promise.all(ps).then(function (rs) {
-        for (var k = 0; k < rs.length; k++) {
-          if (!rs[k]) return;            // 缺號:到這裡為止
-          out.push(rs[k]);
-        }
-        return batch(end + 1);
-      });
-    }
-    return (memo[key] = tryIndex(folder, 1, null).then(function (first) {
-      if (!first) return;
-      out.push(first);
-      hint = first.src.split('.').pop();
-      return batch(2);
-    }).then(function () {
+    return (memo[key] = getManifest().then(function (m) {
+      var e = m && m.folders && m.folders[folder], out = [];
+      if (e && e.length) {
+        out = e.slice(0, max).map(function (x) {
+          return {
+            src: folder + '/' + x.n,
+            thumb: x.s ? folder + '/' + x.s : folder + '/' + x.n,
+            mid: x.m ? folder + '/' + x.m : folder + '/' + x.n,
+            w: x.w, h: x.h
+          };
+        });
+        // 清單之後新放的圖(還沒產生縮圖)接著找
+        return scan(folder, max, out, out.length + 1, out[out.length - 1].src.split('.').pop()).then(function () { return out; });
+      }
+      return scan(folder, max, out, 1, null).then(function () { return out; });
+    }).then(function (out) {
       writeCache(key, out);
       return out;
     }));
